@@ -15,7 +15,7 @@ def get_stock_data_wotd(stock):
     datum = []
     no_data = True
 
-    date = "2015-05-01"
+    date = "2018-05-01"
 
     keys = ["wq5pGbL5D7afdTjXIJuYKPHGZchgsDsDyHGpxHPRsblEWHKoccnavQWdFGHq","dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA","QX5Y9J1tkhFrIF91ADrkfzBznag2NcSjSKABpcVuUV1oHa4IpvBN9yLUmoQV"]
     key = random.choice(keys)
