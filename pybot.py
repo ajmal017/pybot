@@ -211,33 +211,60 @@ def buy(bot, update, args):
 
 def sell(bot, update, args):
 
-    with open('PF.txt', 'r') as f:
-        for l in f:
-            line = l
+    if len(args) == 2:
 
-    trades = line.split(';')
+        with open('PF.txt', 'r') as f:
+            for l in f:
+                line = l
 
-    l_vorhanden = False
+        trades = line.split(';')
 
-    for trade in trades:
-        split_trade = trade.split(',')
-        if args[0] == split_trade[0]:
-            bot.send_message(chat_id=update.message.chat_id, text=args[0] + " wurde verkauft!")
-            trades.remove(trade)
-            l_vorhanden = True
+        l_vorhanden = False
 
-    if not l_vorhanden:
-        bot.send_message(chat_id=update.message.chat_id, text=args[0] + " konnte im Portfolio nicht gefunden werden!")
+        for trade in trades:
+            split_trade = trade.split(',')
+            if args[0] == split_trade[0]:
+                bot.send_message(chat_id=update.message.chat_id, text=args[0] + " " + args[1] + " von " + split_trade[2] + " Aktien wurden verkauft!")
+                trades.remove(trade)
+                l_vorhanden = True
 
-    line = ""
+        if not l_vorhanden:
+            bot.send_message(chat_id=update.message.chat_id, text=args[0] + " konnte im Portfolio nicht gefunden werden!")
 
-    for trade in trades:
-        if (line != ""):
-            line = line + ';'
-        line = line + trade
+        line = ""
 
-    with open('PF.txt', 'w') as f:
-        f.write(line)
+        for trade in trades:
+            if (line != ""):
+                line = line + ';'
+            line = line + trade
+
+        with open('PF.txt', 'w') as f:
+            f.write(line)
+
+    else:
+
+        bot.send_message(chat_id=update.message.chat_id, text="Aktie Anzahl!")
+
+
+
+def help(bot, update):
+    bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, I'm helping!")
+    bot.send_message(chat_id=update.message.chat_id, text="CMD: /signals - DESCR: Check whether Stock or WL has buy-signals")
+    bot.send_message(chat_id=update.message.chat_id, text="CMD: /addWL - DESCR: Add a stock to WL")
+    bot.send_message(chat_id=update.message.chat_id, text="CMD: /rmWL - DESCR: Remove a stock from WL")
+    bot.send_message(chat_id=update.message.chat_id, text="CMD: /showWL - DESCR: Show your WL")
+    bot.send_message(chat_id=update.message.chat_id, text="CMD: /buy - DESCR: Adds n stocks to your PF")
+    bot.send_message(chat_id=update.message.chat_id, text="CMD: /sell - DESCR: Sells an amount stock from your PF")
+    bot.send_message(chat_id=update.message.chat_id, text="CMD: /getSL - DESCR: Gets the current SL to the stocks in your PF or to the stock you choose")
+    '''
+    bot.send_message(chat_id=update.message.chat_id, text= )
+    bot.send_message(chat_id=update.message.chat_id, text= )
+    bot.send_message(chat_id=update.message.chat_id, text= )
+    bot.send_message(chat_id=update.message.chat_id, text= )
+    bot.send_message(chat_id=update.message.chat_id, text= )
+    bot.send_message(chat_id=update.message.chat_id, text= )
+    '''
+
 
 
 ##################################################################################################
@@ -295,6 +322,8 @@ dp.add_handler(CommandHandler('showWL',show_wl))
 dp.add_handler(CommandHandler('buy', buy, pass_args=True))
 dp.add_handler(CommandHandler('sell', sell, pass_args=True))
 dp.add_handler(CommandHandler('getSL', stops, pass_args=True))
+
+p.add_handler(CommandHandler('help',help))
 
 
 updater.start_polling()
