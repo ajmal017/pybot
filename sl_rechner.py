@@ -36,7 +36,7 @@ def get_sl(symbol, date, ek):
 
     #output.append(date_index)
 
-    for i in range(date_index+1, -1, -1):
+    for i in range(date_index, -1, -1):
 
         if last_high < stock_data["high"][i]:
             last_high = stock_data["high"][i]
@@ -44,7 +44,7 @@ def get_sl(symbol, date, ek):
         if (trade["TP"] < last_high - 3*atr[i]):
             trade["TP"] = last_high - 3*atr[i]
 
-        output.append(stock_data["date"][i] + " " + i)
+        output.append(stock_data["date"][i] + " " + str(i))
 
         if (stock_data["low"][i] < trade["SL"]):
 
