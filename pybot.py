@@ -323,7 +323,7 @@ dp.add_handler(CommandHandler('buy', buy, pass_args=True))
 dp.add_handler(CommandHandler('sell', sell, pass_args=True))
 dp.add_handler(CommandHandler('getSL', stops, pass_args=True))
 
-p.add_handler(CommandHandler('help',help))
+dp.add_handler(CommandHandler('help',help))
 
 
 updater.start_polling()
