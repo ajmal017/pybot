@@ -27,9 +27,9 @@ def get_sl(symbol, date, ek):
         if (stock_data["date"][i] == date):
             date_index = i
             trade["SL"] = ek - 2.5*atr[i]
-            #output.append("initialer SL: " + str(trade["SL"]))
+            output.append("initialer SL: " + str(trade["SL"]))
             trade["TP"] = ek + 2.5*atr[i]
-            #output.append("initialer TP: " + str(trade["TP"]))
+            output.append("initialer TP: " + str(trade["TP"]))
             break
 
     output.append("---------" + symbol + "----------")
