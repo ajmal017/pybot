@@ -44,6 +44,7 @@ def get_sl(symbol, date, ek):
         if (trade["TP"] < last_high - 3*atr[i]):
             trade["TP"] = last_high - 3*atr[i]
 
+        output.append(stock_data["date"][i] + " " + i)
 
         if (stock_data["low"][i] < trade["SL"]):
 
