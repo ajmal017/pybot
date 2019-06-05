@@ -5,6 +5,7 @@ import re
 from datetime import time
 from  HMA_strat import check_signal
 from sl_rechner import get_sl
+from kursdaten import get_stock_data
 
 g_bot_id = '802108543:AAFi_gBASTxGhn0oDwLsG74AN9vzg4Rsr3M'
 g_mychat_id = 640106465
@@ -246,16 +247,49 @@ def sell(bot, update, args):
         bot.send_message(chat_id=update.message.chat_id, text="Aktie Anzahl!")
 
 
+def show_pf(bot, update):
+
+    with open('PF.txt', 'r') as f:
+        for l in f:
+            line = l
+
+    pf = line.split(';')
+
+    bot.send_message(chat_id=update.message.chat_id, text="Aktuelles Portfolio:")
+
+    for trade in pf:
+
+        split_trade = trade.split(',')
+
+        stock_data = []
+        stock_data = get_stock_data(split_trade[0])
+        l_kurs = 0
+        l_kurs = stock_data["close"][0]
+        l_entwicklung = 0
+        l_entwicklung = (l_kurs - float(split_trade[3]))/float(split_trade[3])*100
+
+        l_text = split_trade[0] + '\nAnzahl: ' + str(split_trade[2]) + "\nEK: " + str(split_trade[3]) + "\nakt. Kurs: " + str(l_kurs) + '\nEntwicklung' + str(l_entwicklung) + '%'
+        bot.send_message(chat_id=update.message.chat_id, text=l_text)
+
+
 
 def help(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, I'm helping!")
+
+    l_text = "CMD: /signals - DESCR: Check whether Stock or WL has buy-signals"+"\nCMD: /addWL - DESCR: Add a stock to WL"+"\nCMD: /rmWL - DESCR: Remove a stock from WL"+"\nCMD: /showWL - DESCR: Show your WL"+"\nCMD: /buy - DESCR: Adds n stocks to your PF"+"\nCMD: /sell - DESCR: Sells an amount stock from your PF"+"\nCMD: /showPF - DESCR: Show your Portfolio"+"\nCMD: /getSL - DESCR: Gets the current SL to the stocks in your PF or to the stock you choose"
+
+    bot.send_message(chat_id=update.message.chat_id, text=l_text)
+
+    '''
     bot.send_message(chat_id=update.message.chat_id, text="CMD: /signals - DESCR: Check whether Stock or WL has buy-signals")
     bot.send_message(chat_id=update.message.chat_id, text="CMD: /addWL - DESCR: Add a stock to WL")
     bot.send_message(chat_id=update.message.chat_id, text="CMD: /rmWL - DESCR: Remove a stock from WL")
     bot.send_message(chat_id=update.message.chat_id, text="CMD: /showWL - DESCR: Show your WL")
     bot.send_message(chat_id=update.message.chat_id, text="CMD: /buy - DESCR: Adds n stocks to your PF")
     bot.send_message(chat_id=update.message.chat_id, text="CMD: /sell - DESCR: Sells an amount stock from your PF")
+    bot.send_message(chat_id=update.message.chat_id, text="CMD: /showPF - DESCR: Show your Portfolio")
     bot.send_message(chat_id=update.message.chat_id, text="CMD: /getSL - DESCR: Gets the current SL to the stocks in your PF or to the stock you choose")
+    '''
     '''
     bot.send_message(chat_id=update.message.chat_id, text= )
     bot.send_message(chat_id=update.message.chat_id, text= )
@@ -321,6 +355,7 @@ dp.add_handler(CommandHandler('rmWL', rm_from_wl, pass_args=True))
 dp.add_handler(CommandHandler('showWL',show_wl))
 dp.add_handler(CommandHandler('buy', buy, pass_args=True))
 dp.add_handler(CommandHandler('sell', sell, pass_args=True))
+dp.add_handler(CommandHandler('showPF', show_pf))
 dp.add_handler(CommandHandler('getSL', stops, pass_args=True))
 
 dp.add_handler(CommandHandler('help',help))
