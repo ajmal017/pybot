@@ -69,6 +69,6 @@ def get_sl(symbol, date, ek):
 
     output.append("aktueller SL: " + str(trade["SL"]))
     output.append("aktueller TP: " + str(trade["TP"]))
-    output.append("letzter Close: " + str(stock_data["close"][0]))
+    output.append("aktueller Kurs: " + str(stock_data["close"][0]))
 
     return output
