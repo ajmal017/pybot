@@ -20,8 +20,22 @@ def get_stock_data_wotd(stock):
     keys = ["wq5pGbL5D7afdTjXIJuYKPHGZchgsDsDyHGpxHPRsblEWHKoccnavQWdFGHq","dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA","QX5Y9J1tkhFrIF91ADrkfzBznag2NcSjSKABpcVuUV1oHa4IpvBN9yLUmoQV"]
     key = random.choice(keys)
 
-    url = "https://www.worldtradingdata.com/api/v1/history?symbol="+stock+"&date_from="+date+"&sort=newest&api_token="+key
 
+    url = "https://www.worldtradingdata.com/api/v1/stock?symbol="+stock+"&api_token="+key
+    resp = requests.get(url)
+
+    if "data" in resp.json():
+
+        open.append(float(resp.json()["data"][0]["price_open"]))
+        high.append(float(resp.json()["data"][0]["day_high"]))
+        low.append(float(resp.json()["data"][0]["day_low"]))
+        close.append(float(resp.json()["data"][0]["price"]))
+        volume.append(float(resp.json()["data"][0]["volume"]))
+
+        datum.append(resp.json()["data"][0]["last_trade_time"][:10])
+
+
+    url = "https://www.worldtradingdata.com/api/v1/history?symbol="+stock+"&date_from="+date+"&sort=newest&api_token="+key
     resp = requests.get(url)
 
     if "history" in resp.json() and len(resp.json()["history"]) > 201:

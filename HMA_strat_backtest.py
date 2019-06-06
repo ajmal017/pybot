@@ -108,7 +108,7 @@ def backtest(stock):
                     print("sum = " + str(sum))
                 trade = {"position" : "$", "EK" : 0, "SL" : 0, "TP": 0, "Anzahl" : 0}
 
-            if (trade["TP"] > 0) and (stock_data["high"][i] > trade["TP"]) and trade["SL"] < trade["EK"]:
+            if (trade["SL"] < trade["EK"]) and (stock_data["high"][i] > trade["TP"]):
                 '''
                 print("Gewinnmitnahme (2.5 ATR) - Profit: " + str((trade["TP"] - trade["EK"])*trade["Anzahl"]) +"€ "+ str((trade["TP"] - trade["EK"]) / trade["EK"]*100) + "%")
                 sum += (trade["TP"] - trade["EK"])*trade["Anzahl"]
@@ -118,7 +118,7 @@ def backtest(stock):
                 '''
                 trade["SL"] = trade["EK"]
 
-            if (stock_data["low"][i] < last_high - 3*atr_1[i]) and (trade["TP"] > 0) and trade["SL"] > trade["EK"]: #SL > EK damit Gewinnmitnahme erst im Profit
+            if (stock_data["low"][i] < trade["TP"]) and trade["SL"] > trade["EK"]: #SL > EK damit Gewinnmitnahme erst im Profit
 
                 print("Gewinnmitnahme (2.5 ATR) - Profit: " + str((last_high - 3*atr_1[i] - trade["EK"])*trade["Anzahl"]/2) +"€ "+ str((last_high - 3*atr_1[i] - trade["EK"]) / trade["EK"]*100) + "%")
                 sum += (last_high - 3*atr_1[i] - trade["EK"])*trade["Anzahl"]/2
@@ -126,12 +126,6 @@ def backtest(stock):
                 trade["TP"] = 0
                 trade["Anzahl"] = trade["Anzahl"]/2
 
-
-
-            #if ((trade["TP"] == 0) and (sma[i] - 1.5 * atr_1[i]) > trade["SL"]):
-            #if (stock_data["close"][i]/sma[i]>1.15) and (trade["SL"] < stock_data["high"][i] - 3*atr_1[i]):
-
-                #trade["SL"] = stock_data["high"][i] - 3*atr_1[i]
 
             if ((sma[i] - 1.5 * atr_1[i]) > trade["SL"]) and stock_data["high"][i] > (sma[i] - 1.5 * atr_1[i]):
 
