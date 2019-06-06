@@ -27,9 +27,9 @@ def get_sl(symbol, date, ek):
         if (stock_data["date"][i] == date):
             date_index = i
             trade["SL"] = ek - 2.5*atr[i]
-            output.append("initialer SL: " + str(trade["SL"]))
+            #output.append("initialer SL: " + str(trade["SL"]))
             trade["TP"] = ek + 2.5*atr[i]
-            output.append("initialer TP: " + str(trade["TP"]))
+            #output.append("initialer TP: " + str(trade["TP"]))
             break
 
     output.append("---------" + symbol + "----------")
@@ -51,7 +51,7 @@ def get_sl(symbol, date, ek):
 
         #output.append(stock_data["date"][i] + ' ' + str(stock_data["high"][i]) + str(i))
 
-        if (trade["TP"] > 0) and (stock_data["high"][i] > trade["TP"]) and trade["SL"] < trade["EK"]:
+        if (stock_data["high"][i] > trade["TP"]) and trade["SL"] < trade["EK"]:
 
             trade["SL"] = trade["EK"]
             output.append(str(stock_data["date"][i]) + " - TP überschritten -> Anpassung SL auf EK: " + str(trade["SL"]))
