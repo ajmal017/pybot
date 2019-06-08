@@ -12,9 +12,9 @@ def get_stock_data_wotd(stock):
     stock_data = []
     no_data = True
 
-    #dt = datetime.today() - timedelta(days=365)
-    #date = dt.strftime('%Y-%m-%d')
-    date = '2015-01-01'
+    dt = datetime.today() - timedelta(days=365)
+    date = dt.strftime('%Y-%m-%d')
+    #date = '2015-01-01'
 
     keys = ["wq5pGbL5D7afdTjXIJuYKPHGZchgsDsDyHGpxHPRsblEWHKoccnavQWdFGHq","dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA","QX5Y9J1tkhFrIF91ADrkfzBznag2NcSjSKABpcVuUV1oHa4IpvBN9yLUmoQV"]
     key = random.choice(keys)

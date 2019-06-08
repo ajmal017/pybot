@@ -23,7 +23,7 @@ def get_sl(symbol, date, ek):
     last_high = 0
     trade = {"EK" : ek, "SL" : 0, "TP": 0, "Anzahl" : 0}
 
-    for i in range(len(stock_data["date"])):
+    for i in range(len(stock_data)):
         if (stock_data[i]["date"] == date):
             date_index = i
             trade["SL"] = ek - 2.5*atr[i]
