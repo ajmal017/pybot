@@ -15,7 +15,7 @@ def check_signal(stock):
     #get stock data
     stock_data = get_stock_data_wotd(stock)
 
-    if (stock_data["open"][0] <= 0) and (stock_data["close"][0] <= 0):
+    if (stock_data[0]["open"] <= 0) and (stock_data[0]["close"] <= 0):
         return
 
 
@@ -35,7 +35,7 @@ def check_signal(stock):
     #get stock data
     stock_data = get_stock_data_wotd(stock)
 
-    if (stock_data["open"][0] <= 0) and (stock_data["close"][0] <= 0):
+    if (stock_data[0]["open"] <= 0) and (stock_data[0]["close"] <= 0):
         return
 
     #get indicator values
@@ -62,21 +62,17 @@ def check_signal(stock):
     hma_3 = hma_3[:min_length]
     cci = cci[:min_length]
 
-    stock_data["open"] = stock_data["open"][:min_length]
-    stock_data["high"] = stock_data["high"][:min_length]
-    stock_data["low"] = stock_data["low"][:min_length]
-    stock_data["close"] = stock_data["close"][:min_length]
-    stock_data["volume"] = stock_data["volume"][:min_length]
-    stock_data["date"] = stock_data["date"][:min_length]
+    stock_data = stock_data[:min_length]
 
-    '''
+
     print(sma[0])
     print(atr_1[0])
     print(atr_2[0])
     print(hma_1[0])
     print(hma_2[0])
     print(hma_3[0])
-    '''
+    print(cci[0])
+
 
 
     if ((cci[0] > 100) and ((hma_1[0] - hma_1[1]) > 0) and ((hma_2[0] - hma_2[1]) > 0) and ((hma_3[0] - hma_3[1]) > 0) and ((sma[0] - sma[1]) > 0) and ((hma_1[0] - hma_1[1]) > (hma_1[1] - hma_1[2]))):
@@ -86,17 +82,17 @@ def check_signal(stock):
                 vol_avg = 0
 
                 for i in range(14):
-                    vol_avg += stock_data["volume"][0]
+                    vol_avg += stock_data[i]["volume"]
 
                 vol_avg = vol_avg/14
 
-                if ((stock_data["volume"][0]*atr_2[0] > vol_avg*atr_1[0]) and (stock_data["close"][0] > stock_data["open"][0]) and (stock_data["close"][0] > stock_data["close"][1])):
+                if ((stock_data[0]["volume"]*atr_2[0] > vol_avg*atr_1[0]) and (stock_data[0]["close"] > stock_data[0]["open"]) and (stock_data[0]["close"] > stock_data[1]["close"])):
 
                     trade = {"EK" : 0, "Anzahl" : 0, "SL" : 0, "TP": 0}
-                    trade["EK"] = stock_data["close"][0]
+                    trade["EK"] = stock_data[0]["close"]
                     trade["Anzahl"] = round((0.02*sum)/(2.5*atr_1[0]))
-                    trade["SL"] = stock_data["close"][0] - (2.5*atr_1[0])
-                    trade["TP"] = stock_data["close"][0] + (2.5*atr_1[0])
+                    trade["SL"] = stock_data[0]["close"] - (2.5*atr_1[0])
+                    trade["TP"] = stock_data[0]["close"] + (2.5*atr_1[0])
 
                     output.append("Buy " + str(trade["Anzahl"]) + " Stück für " + str(trade["EK"]))
                     output.append("ATR = " + str(atr_1[0]))
