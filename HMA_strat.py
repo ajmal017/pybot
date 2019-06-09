@@ -59,7 +59,7 @@ def check_signal(stock):
 
     #stock_data = stock_data[:min_length]
 
-    
+    '''
     print(sma[0])
     print(atr_1[0])
     print(atr_2[0])
@@ -67,6 +67,7 @@ def check_signal(stock):
     print(hma_2[0])
     print(hma_3[0])
     print(cci[0])
+    '''
 
 
 
@@ -77,7 +78,6 @@ def check_signal(stock):
                 vol_avg = 0
 
                 for i in range(14):
-                    print(stock_data[i]["volume"])
                     vol_avg += stock_data[i]["volume"]
 
                 vol_avg = vol_avg/14

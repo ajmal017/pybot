@@ -20,33 +20,59 @@ def wl_signals(bot):
     with open('WL.txt', 'r') as f:
         for l in f:
             line = l
+            wl = line.split(',')
 
-    wl = line.split(',')
+            for i in range(len(wl)):
+                output = []
+                output = check_signal(wl[i])
 
-    for i in range(len(wl)):
-        output = []
-        output = check_signal(wl[i])
-
-        for k in range(len(output)):
-            bot.send_message(chat_id = g_mychat_id, text = output[k])
+                for k in range(len(output)):
+                    bot.send_message(chat_id = g_mychat_id, text = output[k])
 
 def get_stops(bot):
 
     with open('PF.txt', 'r') as f:
         for l in f:
             line = l
+            trades = line.split(';')
 
-    pf = line.split(';')
+            i = 0
+            l_trades = []
 
-    for i in range(len(pf)):
-        trade = []
-        trade = pf[i].split(',')
+            for trade in trades:
+                split_trade = trade.split(',')
 
-        output = []
-        output = get_sl(trade[0], trade[1], float(trade[3]))
+                output = []
+                output = get_sl(split_trade[0], split_trade[1], float(split_trade[3]))
 
-        for k in range(len(output)):
-            bot.send_message(chat_id = g_mychat_id, text = output[k])
+                sl = output[-3][14:]
+                tp = output[-2][14:]
+
+                l_trades.append(" ")
+                l_trades[i] = split_trade[0] + ','
+                l_trades[i] = l_trades[i] + split_trade[1] + ','
+                l_trades[i] = l_trades[i] + split_trade[2] + ',' #Anzahl
+                l_trades[i] = l_trades[i] + str(split_trade[3]) + ',' #EK
+                l_trades[i] = l_trades[i] + str(sl) + ',' #SL
+                l_trades[i] = l_trades[i] + str(tp)#TP
+                trades.remove(trade)
+
+                i+=1
+
+                for k in range(len(output)):
+                    bot.send_message(chat_id = g_mychat_id, text = output[k])
+
+
+    line = ""
+
+    for trade in l_trades:
+        if (line != ""):
+            line = line + ';'
+        line = line + trade
+
+    with open('PF.txt', 'w') as f:
+
+        f.write(line)
 
 
 def bop(bot, update):
@@ -193,9 +219,9 @@ def buy(bot, update, args):
             trades.remove(trade)
             l_nachkauf = True
 
-    if not l_nachkauf:
-        l_trade = args[0] + ',' + args[1] + ',' + args[2] + ',' + args[3] + ',' + args[4] + ',' + args[5]
-        bot.send_message(chat_id=update.message.chat_id, text=args[0] + " Erstkauf!")
+        if not l_nachkauf:
+            l_trade = args[0] + ',' + args[1] + ',' + args[2] + ',' + args[3] + ',' + args[4] + ',' + args[5]
+            bot.send_message(chat_id=update.message.chat_id, text=args[0] + " Erstkauf!")
 
     trades.append(l_trade)
 
@@ -268,7 +294,7 @@ def show_pf(bot, update):
         l_entwicklung = 0
         l_entwicklung = (l_kurs - float(split_trade[3]))/float(split_trade[3])*100
 
-        l_text = split_trade[0] + '\nAnzahl: ' + str(split_trade[2]) + "\nEK: " + str(split_trade[3]) + "\nakt. Kurs: " + str(l_kurs) + '\nEntwicklung' + str(l_entwicklung) + '%'
+        l_text = split_trade[0] + '\nAnzahl: ' + str(split_trade[2]) + "\nEK: " + str(split_trade[3]) + "\nakt. Kurs: " + str(l_kurs) + '\nEntwicklung' + ' ' + str(l_entwicklung) + '%'
         bot.send_message(chat_id=update.message.chat_id, text=l_text)
 
 
