@@ -364,11 +364,16 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 updater = Updater(g_bot_id)
 jobq = updater.job_queue
 
-t1 = time(15,20)
-t2 = time(9,45)
+t1 = time(6,30)
+t2 = time(15,30)
+t3 = time(20,50)
 
-daily_signals_jobq = jobq.run_daily(daily_signals,t1)
-daily_stops_jobq = jobq.run_daily(daily_stops, t2)
+daily_signals_jobq1 = jobq.run_daily(daily_signals,t1)
+daily_stops_jobq1 = jobq.run_daily(daily_stops, t1)
+daily_signals_jobq2 = jobq.run_daily(daily_signals,t2)
+daily_stops_jobq2 = jobq.run_daily(daily_stops, t2)
+daily_signals_jobq3 = jobq.run_daily(daily_signals,t3)
+daily_stops_jobq3 = jobq.run_daily(daily_stops, t3)
 
 dp = updater.dispatcher
 dp.add_handler(CommandHandler('bop',bop))

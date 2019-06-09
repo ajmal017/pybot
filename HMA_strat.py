@@ -73,7 +73,7 @@ def check_signal(stock):
 
     if ((cci[0] > 100) and ((hma_1[0] - hma_1[1]) > 0) and ((hma_2[0] - hma_2[1]) > 0) and ((hma_3[0] - hma_3[1]) > 0) and ((sma[0] - sma[1]) > 0) and ((hma_1[0] - hma_1[1]) > (hma_1[1] - hma_1[2]))):
 
-                output.append("--------------------" + stock + "--------------------")
+                output.append("!!!!!!!!!!" + stock + "!!!!!!!!!!")
 
                 vol_avg = 0
 
@@ -96,6 +96,7 @@ def check_signal(stock):
                     output.append("Take Profit 2.5 ATR: "+str(trade["TP"]))
 
     if len(output) == 0:
-        output.append(stock + ' - No Signal')
+        output.append("----------" + stock + "----------")
+        output.append("Kein Signal")
 
     return output
