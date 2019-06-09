@@ -30,11 +30,6 @@ def check_signal(stock):
     atr_1_length = 14
     atr_2_length = 1
 
-
-
-    #get stock data
-    stock_data = get_stock_data_wotd(stock)
-
     if (stock_data[0]["open"] <= 0) and (stock_data[0]["close"] <= 0):
         return
 
@@ -62,9 +57,9 @@ def check_signal(stock):
     hma_3 = hma_3[:min_length]
     cci = cci[:min_length]
 
-    stock_data = stock_data[:min_length]
+    #stock_data = stock_data[:min_length]
 
-
+    
     print(sma[0])
     print(atr_1[0])
     print(atr_2[0])
@@ -82,6 +77,7 @@ def check_signal(stock):
                 vol_avg = 0
 
                 for i in range(14):
+                    print(stock_data[i]["volume"])
                     vol_avg += stock_data[i]["volume"]
 
                 vol_avg = vol_avg/14

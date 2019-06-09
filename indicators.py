@@ -60,7 +60,7 @@ def get_sma(stock_data, sma_length):
 
     sma_values = []
 
-    for i in range(1,len(stock_data) - (sma_length-1)):
+    for i in range(1,len(stock_data) - (sma_length-2)):
 
         sma = 0.0000000000
 
@@ -85,7 +85,7 @@ def get_ema(stock_data, ema_length):
     ema = []
     weight = 2 / (ema_length + 1)
 
-    for i in range(1, len(stock_data) - (ema_length-1)):
+    for i in range(1, len(stock_data) - (ema_length-2)):
 
         sma = 0.0000000000
 
@@ -126,7 +126,7 @@ def get_atr(stock_data, atr_length):
     tr = []
     atr = []
 
-    for i in range(len(stock_data)):
+    for i in range(len(stock_data)+1):
 
         high_low = 0
         high_close = 0
@@ -164,7 +164,7 @@ def get_wma(stock_data, wma_length):
 
     wma_values = []
 
-    for i in range(1,len(stock_data) - (wma_length-1)):
+    for i in range(1,len(stock_data) - (wma_length-2)):
 
         wma = 0.0000
 
@@ -190,7 +190,7 @@ def get_hma(stock_data, hma_length):
     wma1 = get_wma(stock_data, round(hma_length/2))
     wma2 = get_wma(stock_data, hma_length)
 
-    for i in range(-1,len(wma2)):
+    for i in range(len(wma2)):
         wma_diff.append({"close" : 2*wma1[i] - wma2[i]})
 
     hma_values = get_wma(wma_diff, round(sqrt(hma_length)))

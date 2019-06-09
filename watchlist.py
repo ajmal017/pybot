@@ -1,13 +1,13 @@
 from HMA_strat import check_signal
 #from backtest2 import backtest
 from minervini import check_trend
-from HMA_strat_backtest_old import backtest
+from HMA_strat_backtest import backtest
 from sl_rechner import get_sl
 
 #check_trend('PYPL')
-#backtest("WDI.DE")
+backtest("WDI.DE")
 #get_sl("WDI.DE", "2019-04-23", 120.00)
-check_signal("WDI.DE")
+#check_signal("WDI.DE")
 
 #DAX
 '''

@@ -264,7 +264,7 @@ def show_pf(bot, update):
         stock_data = []
         stock_data = get_stock_data(split_trade[0])
         l_kurs = 0
-        l_kurs = stock_data["close"][0]
+        l_kurs = stock_data[0]["close"]
         l_entwicklung = 0
         l_entwicklung = (l_kurs - float(split_trade[3]))/float(split_trade[3])*100
 
