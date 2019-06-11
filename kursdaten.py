@@ -12,7 +12,7 @@ def get_stock_data_wotd(stock):
     keys = ["wq5pGbL5D7afdTjXIJuYKPHGZchgsDsDyHGpxHPRsblEWHKoccnavQWdFGHq","dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA","QX5Y9J1tkhFrIF91ADrkfzBznag2NcSjSKABpcVuUV1oHa4IpvBN9yLUmoQV"]
     key = random.choice(keys)
 
-    dt = datetime.today() - timedelta(days=150)
+    dt = datetime.today() - timedelta(days=200)
     date = dt.strftime('%Y-%m-%d')
     #date = '2015-01-01'
 
@@ -38,13 +38,11 @@ def get_stock_data_wotd(stock):
     url = "https://www.worldtradingdata.com/api/v1/history?symbol="+stock+"&date_from="+date+"&sort=newest&api_token="+key
     resp = requests.get(url)
 
-    if "history" in resp.json() and len(resp.json()["history"]) > 201:
+    if "history" in resp.json() and len(resp.json()["history"]) > 100:
         no_data = False
 
     if no_data:
-
         print(stock+": NO DATA!")
-        resp = c_offline_data
 
     for ts in resp.json()["history"]:
 
@@ -118,7 +116,7 @@ def get_stock_data(stock):
 
         stock_data.append(trading_day)
 
-        if i == 150:
+        if i == 200:
             return stock_data
 
         i+=1
