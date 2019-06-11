@@ -5,7 +5,7 @@ import re
 from datetime import time
 from  HMA_strat import check_signal
 from sl_rechner import get_sl
-from kursdaten import get_stock_data
+from kursdaten import get_stock_data_wotd
 
 g_bot_id = '802108543:AAFi_gBASTxGhn0oDwLsG74AN9vzg4Rsr3M'
 g_mychat_id = 640106465
@@ -135,11 +135,14 @@ def add_to_wl(bot, update, args):
     for i in range(len(args)):
 
         if args[i] not in wl:
-            if (line != "") and  (i < len(args)):
-                line = line + ','
-            line = line + args[i]
-
-            bot.send_message(chat_id=update.message.chat_id, text=args[i] + " zur WL hinzugefügt!")
+            stock_data = get_stock_data_wotd(args[i])
+            if len(stock_data) > 100:
+                if (line != "") and  (i < len(args)):
+                    line = line + ','
+                line = line + args[i]
+                bot.send_message(chat_id=update.message.chat_id, text=args[i] + " zur WL hinzugefügt!")
+            else:
+                bot.send_message(chat_id=update.message.chat_id, text=args[i] + " zu diesem Symbol konnten keine Daten gefunden werden!")
 
         else:
             bot.send_message(chat_id=update.message.chat_id, text=args[i] + " existiert bereits in WL!")
@@ -288,7 +291,7 @@ def show_pf(bot, update):
         split_trade = trade.split(',')
 
         stock_data = []
-        stock_data = get_stock_data(split_trade[0])
+        stock_data = get_stock_data_wotd(split_trade[0])
         l_kurs = 0
         l_kurs = stock_data[0]["close"]
         l_entwicklung = 0
