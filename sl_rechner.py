@@ -1,5 +1,5 @@
 from indicators_full import get_atr, get_sma
-from kursdaten_wotd import get_stock_data_wotd
+from kursdaten import get_stock_data_wotd
 
 
 def get_sl(symbol, date, ek):
