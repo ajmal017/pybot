@@ -5,7 +5,7 @@ from HMA_strat_backtest import backtest
 from sl_rechner import get_sl
 
 #check_trend('PYPL')
-backtest("WDI.DE")
+backtest("FB")
 #get_sl("WDI.DE", "2019-04-23", 120.00)
 #check_signal("WDI.DE")
 

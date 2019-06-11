@@ -1,7 +1,7 @@
 import requests
 import json
 from indicators import get_sma, get_hma, get_atr, get_cci
-from kursdaten_wotd import get_stock_data_wotd
+from kursdaten import get_stock_data_wotd
 from time import sleep
 
 
@@ -17,7 +17,6 @@ def check_signal(stock):
 
     if (stock_data[0]["open"] <= 0) and (stock_data[0]["close"] <= 0):
         return
-
 
     sma_length = 50
 

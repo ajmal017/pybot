@@ -1,7 +1,7 @@
 import requests
 import json
 from indicators_full import get_hma, get_atr, get_sma, get_cci, get_wma
-from kursdaten_wotd import get_stock_data_wotd
+from kursdaten import get_stock_data_wotd
 from time import sleep
 
 stock_data = []
