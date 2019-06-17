@@ -47,7 +47,7 @@ def get_sl(symbol, date, ek):
         if (stock_data[i]["low"] < trade["SL"]):
 
             output.append(stock_data[i]["date"] + " - SL hit - Sold at " + str(trade["SL"]))
-            return output
+            #return output
 
         #output.append(stock_data[i]["date"] + ' ' + str(stock_data[i]["high"]) + str(i))
 
