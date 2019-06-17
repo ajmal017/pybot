@@ -58,7 +58,7 @@ def get_sl(symbol, date, ek):
 
         if  (stock_data[i]["low"] < trade["TP"]) and trade["SL"] > trade["EK"]: #SL > EK damit Gewinnmitnahme erst im Profit
 
-            #output.append(stock_data[i]["date"] + " - Gewinnmitnahme 50% verkauft (3ATR)")
+            output.append(stock_data[i]["date"] + " - Gewinnmitnahme 50% verkauft (3ATR)")
             #output.append("TP = 0")
             trade["TP"] = 0
 

@@ -222,9 +222,9 @@ def buy(bot, update, args):
             trades.remove(trade)
             l_nachkauf = True
 
-        if not l_nachkauf:
-            l_trade = args[0] + ',' + args[1] + ',' + args[2] + ',' + args[3] + ',' + args[4] + ',' + args[5]
-            bot.send_message(chat_id=update.message.chat_id, text=args[0] + " Erstkauf!")
+    if not l_nachkauf:
+        l_trade = args[0] + ',' + args[1] + ',' + args[2] + ',' + args[3] + ',' + args[4] + ',' + args[5]
+        bot.send_message(chat_id=update.message.chat_id, text=args[0] + " Erstkauf!")
 
     trades.append(l_trade)
 
