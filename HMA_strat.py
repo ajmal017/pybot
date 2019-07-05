@@ -85,7 +85,7 @@ def check_signal(stock):
 
                     trade = {"EK" : 0, "Anzahl" : 0, "SL" : 0, "TP": 0}
                     trade["EK"] = stock_data[0]["close"]
-                    trade["Anzahl"] = round((0.02*sum)/(2.5*atr_1[0]))
+                    trade["Anzahl"] = round((0.005*sum)/(2.5*atr_1[0]))
                     trade["SL"] = stock_data[0]["close"] - (2.5*atr_1[0])
                     trade["TP"] = stock_data[0]["close"] + (2.5*atr_1[0])
 

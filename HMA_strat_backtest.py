@@ -73,7 +73,7 @@ def backtest(stock):
     print("CCI: " +  str(cci[0]))
 
     for i in range(-1, (-1)*(len(stock_data)),-1):
-
+        '''
         if stock_data[i]["date"] == '2015-09-17':
 
                 print("Close: " + str(stock_data[i]))
@@ -90,6 +90,7 @@ def backtest(stock):
                 vol_avg = vol_avg/14
                 print("Vol " +  str(stock_data[i]["volume"]))
                 print("Volavg " +  str(vol_avg))
+        '''
 
 
         l_count1 += 1

@@ -55,7 +55,7 @@ def get_stops(bot):
                 l_trades[i] = l_trades[i] + str(split_trade[3]) + ',' #EK
                 l_trades[i] = l_trades[i] + str(sl) + ',' #SL
                 l_trades[i] = l_trades[i] + str(tp)#TP
-                trades.remove(trade)
+                #trades.remove(trade)
 
                 i+=1
 
