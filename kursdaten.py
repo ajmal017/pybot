@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 def get_stock_data_wotd(stock):
     trading_day = {"date" : "1900-01-01", "open" : 0, "high" : 0, "low" : 0, "close" : 0, "volume" : 0, "currency" : "XXX"}
-    wechselkurs = 1
+    wechselkurs = 1.00
     stock_data = []
     no_data = True
 
@@ -23,7 +23,7 @@ def get_stock_data_wotd(stock):
     if "data" in resp.json():
 
         if resp.json()["data"][0]["currency"] != "EUR":
-            wechselkurs = get_wechselkurs(resp.json()["data"][0]["currency"])
+            wechselkurs = float(get_wechselkurs(resp.json()["data"][0]["currency"]))
 
         trading_day["date"] = resp.json()["data"][0]["last_trade_time"][:10]
 
@@ -132,9 +132,10 @@ def get_wechselkurs(currency):
     keys = ["wq5pGbL5D7afdTjXIJuYKPHGZchgsDsDyHGpxHPRsblEWHKoccnavQWdFGHq","dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA","QX5Y9J1tkhFrIF91ADrkfzBznag2NcSjSKABpcVuUV1oHa4IpvBN9yLUmoQV"]
     key = random.choice(keys)
 
-    url = "https://api.worldtradingdata.com/api/v1/forex?base=" + currency + "&api_token=demo" + key
+    url = "https://api.worldtradingdata.com/api/v1/forex?base=" + currency + "&api_token=" + key
     resp = requests.get(url)
+    wechselkurs = 0
 
     if "data" in resp.json():
-
-    		return resp.json()["data"]["EUR"]
+        wechselkurs = resp.json()["data"]["EUR"]
+        return wechselkurs
