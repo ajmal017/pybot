@@ -1,7 +1,7 @@
 import requests
 import json
 from indicators import get_sma, get_hma, get_atr, get_cci
-from kursdaten import get_stock_data_wotd
+from kursdaten import get_stock_data_wotd, get_wechselkurs
 from time import sleep
 
 
@@ -85,9 +85,22 @@ def check_signal(stock):
 
                     trade = {"EK" : 0, "Anzahl" : 0, "SL" : 0, "TP": 0}
                     trade["EK"] = stock_data[0]["close"]
-                    trade["Anzahl"] = round((0.005*sum)/(2.5*atr_1[0]))
+
                     trade["SL"] = stock_data[0]["close"] - (2.5*atr_1[0])
                     trade["TP"] = stock_data[0]["close"] + (2.5*atr_1[0])
+
+                    if stock_data[0]["currency"] != "EUR":
+
+                        wechselkurs = 0
+                        wechselkurs = get_wechselkurs(stock_data[0]["currency"])
+
+                        trade["EK"] = trade["EK"]*wechselkurs
+                        atr_1[0] = atr_1[0]*wechselkurs
+                        trade["SL"] = trade["SL"]*wechselkurs
+                        trade["TP"] = trade["TP"]*wechselkurs
+
+                    trade["Anzahl"] = round((0.005*sum)/(2.5*atr_1[0]))
+
 
                     output.append("Buy " + str(trade["Anzahl"]) + " Stück für " + str(trade["EK"]))
                     output.append("ATR = " + str(atr_1[0]))

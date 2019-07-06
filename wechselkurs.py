@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 
 def get_stock_data_wotd(stock):
     trading_day = {"date" : "1900-01-01", "open" : 0, "high" : 0, "low" : 0, "close" : 0, "volume" : 0, "currency" : "XXX"}
-    wechselkurs = 1
     stock_data = []
     no_data = True
 
@@ -22,15 +21,13 @@ def get_stock_data_wotd(stock):
 
     if "data" in resp.json():
 
-            if resp.json()["data"][0]["currency"] != "EUR":
-                wechselkurs = get_wechselkurs(resp.json()["data"][0]["currency"])
-
     		trading_day["date"] = resp.json()["data"][0]["last_trade_time"][:10]
+            trading_day["currency"] = resp.json()["data"][0]["currency"]
 
-    		trading_day["open"] = float(resp.json()["data"][0]["price_open"])*wechselkurs
-    		trading_day["high"] = float(resp.json()["data"][0]["day_high"])*wechselkurs
-    		trading_day["low"] = float(resp.json()["data"][0]["day_low"])*wechselkurs
-    		trading_day["close"] = float(resp.json()["data"][0]["price"])*wechselkurs
+    		trading_day["open"] = float(resp.json()["data"][0]["price_open"])
+    		trading_day["high"] = float(resp.json()["data"][0]["day_high"])
+    		trading_day["low"] = float(resp.json()["data"][0]["day_low"])
+    		trading_day["close"] = float(resp.json()["data"][0]["price"])
     		trading_day["volume"] = float(resp.json()["data"][0]["volume"])
 
     		stock_data.append(trading_day)
@@ -53,20 +50,20 @@ def get_stock_data_wotd(stock):
         date = str(ts)
 
         if str(stock_data[0]["date"]) == str(date):
-            stock_data[0]["open"] = float(resp.json()["history"][date]["open"])*wechselkurs
-            stock_data[0]["high"] = float(resp.json()["history"][date]["high"])*wechselkurs
-            stock_data[0]["low"] = float(resp.json()["history"][date]["low"])*wechselkurs
-            stock_data[0]["close"] = float(resp.json()["history"][date]["close"])*wechselkurs
+            stock_data[0]["open"] = float(resp.json()["history"][date]["open"])
+            stock_data[0]["high"] = float(resp.json()["history"][date]["high"])
+            stock_data[0]["low"] = float(resp.json()["history"][date]["low"])
+            stock_data[0]["close"] = float(resp.json()["history"][date]["close"])
             stock_data[0]["volume"] = float(resp.json()["history"][date]["volume"])
 
         else:
             trading_day = {"date" : "1900-01-01", "open" : 0, "high" : 0, "low" : 0, "close" : 0, "volume" : 0}
 
             trading_day["date"] = date
-            trading_day["open"] = float(resp.json()["history"][date]["open"])*wechselkurs
-            trading_day["high"] = float(resp.json()["history"][date]["high"])*wechselkurs
-            trading_day["low"] = float(resp.json()["history"][date]["low"])*wechselkurs
-            trading_day["close"] = float(resp.json()["history"][date]["close"])*wechselkurs
+            trading_day["open"] = float(resp.json()["history"][date]["open"])
+            trading_day["high"] = float(resp.json()["history"][date]["high"])
+            trading_day["low"] = float(resp.json()["history"][date]["low"])
+            trading_day["close"] = float(resp.json()["history"][date]["close"])
             trading_day["volume"] = float(resp.json()["history"][date]["volume"])
 
             stock_data.append(trading_day)
@@ -126,15 +123,3 @@ def get_stock_data(stock):
         i+=1
 
     return stock_data
-
-def get_wechselkurs(currency):
-
-    keys = ["wq5pGbL5D7afdTjXIJuYKPHGZchgsDsDyHGpxHPRsblEWHKoccnavQWdFGHq","dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA","QX5Y9J1tkhFrIF91ADrkfzBznag2NcSjSKABpcVuUV1oHa4IpvBN9yLUmoQV"]
-    key = random.choice(keys)
-
-    url = "https://api.worldtradingdata.com/api/v1/forex?base=" + currency + "&api_token=demo" + key
-    resp = requests.get(url)
-
-    if "data" in resp.json():
-
-    		return resp.json()["data"]["EUR"]
