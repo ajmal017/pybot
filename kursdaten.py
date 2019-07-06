@@ -25,7 +25,7 @@ def get_stock_data_wotd(stock):
         if resp.json()["data"][0]["currency"] != "EUR":
             wechselkurs = get_wechselkurs(resp.json()["data"][0]["currency"])
 
-    	trading_day["date"] = resp.json()["data"][0]["last_trade_time"][:10]
+        trading_day["date"] = resp.json()["data"][0]["last_trade_time"][:10]
 
     	trading_day["open"] = float(resp.json()["data"][0]["price_open"])*wechselkurs
     	trading_day["high"] = float(resp.json()["data"][0]["day_high"])*wechselkurs
