@@ -27,13 +27,13 @@ def get_stock_data_wotd(stock):
 
         trading_day["date"] = resp.json()["data"][0]["last_trade_time"][:10]
 
-    	trading_day["open"] = float(resp.json()["data"][0]["price_open"])*wechselkurs
-    	trading_day["high"] = float(resp.json()["data"][0]["day_high"])*wechselkurs
-    	trading_day["low"] = float(resp.json()["data"][0]["day_low"])*wechselkurs
-    	trading_day["close"] = float(resp.json()["data"][0]["price"])*wechselkurs
-    	trading_day["volume"] = float(resp.json()["data"][0]["volume"])
+        trading_day["open"] = float(resp.json()["data"][0]["price_open"])*wechselkurs
+        trading_day["high"] = float(resp.json()["data"][0]["day_high"])*wechselkurs
+        trading_day["low"] = float(resp.json()["data"][0]["day_low"])*wechselkurs
+        trading_day["close"] = float(resp.json()["data"][0]["price"])*wechselkurs
+        trading_day["volume"] = float(resp.json()["data"][0]["volume"])
 
-    	stock_data.append(trading_day)
+        stock_data.append(trading_day)
 
     else:
         return get_stock_data(stock)
