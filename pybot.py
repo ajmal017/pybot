@@ -368,8 +368,7 @@ updater = Updater(g_bot_id)
 jobq = updater.job_queue
 
 t1 = time(6,30)
-t2 = time(15,30)
-t3 = time(20,50)
+t2 = time(17,30)
 
 daily_signals_jobq1 = jobq.run_daily(daily_signals,t1)
 daily_stops_jobq1 = jobq.run_daily(daily_stops, t1)
