@@ -6,6 +6,7 @@ from datetime import time
 from  HMA_strat import check_signal
 from sl_rechner import get_sl
 from kursdaten import get_stock_data_wotd
+from time import sleep
 
 g_bot_id = '802108543:AAFi_gBASTxGhn0oDwLsG74AN9vzg4Rsr3M'
 g_mychat_id = 640106465
@@ -190,6 +191,7 @@ def show_wl(bot, update):
 
     for stock in wl:
         bot.send_message(chat_id=update.message.chat_id, text=stock)
+        sleep(0.1)
 
 def buy(bot, update, args):
 
