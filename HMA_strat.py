@@ -96,6 +96,5 @@ def check_signal(stock):
 
     if len(output) == 0:
         output.append("----------" + stock + "----------")
-        output.append("Kein Signal")
 
     return output

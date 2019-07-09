@@ -24,6 +24,7 @@ def wl_signals(bot):
             wl = line.split(',')
 
             for i in range(len(wl)):
+                sleep(1)
                 output = []
                 output = check_signal(wl[i])
 
