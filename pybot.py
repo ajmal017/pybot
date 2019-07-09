@@ -374,8 +374,6 @@ daily_signals_jobq1 = jobq.run_daily(daily_signals,t1)
 daily_stops_jobq1 = jobq.run_daily(daily_stops, t1)
 daily_signals_jobq2 = jobq.run_daily(daily_signals,t2)
 daily_stops_jobq2 = jobq.run_daily(daily_stops, t2)
-daily_signals_jobq3 = jobq.run_daily(daily_signals,t3)
-daily_stops_jobq3 = jobq.run_daily(daily_stops, t3)
 
 dp = updater.dispatcher
 dp.add_handler(CommandHandler('bop',bop))
