@@ -189,9 +189,12 @@ def show_wl(bot, update):
 
     bot.send_message(chat_id=update.message.chat_id, text="Aktuelle WL:")
 
+    message = ""
+
     for stock in wl:
-        bot.send_message(chat_id=update.message.chat_id, text=stock)
-        sleep(0.1)
+        message = message + stock + "\n"
+
+    bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def buy(bot, update, args):
 
