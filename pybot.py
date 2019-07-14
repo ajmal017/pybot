@@ -220,7 +220,7 @@ def buy(bot, update, args):
             bot.send_message(chat_id=update.message.chat_id, text=args[0] + " Nachkauf!")
 
             l_trade = split_trade[0] + ','
-            l_trade = l_trade + split_trade[1] + ','
+            l_trade = l_trade + args[1] + ','
             l_trade = l_trade + str(int(split_trade[2]) + int(args[2])) + ',' #Anzahl
             l_trade = l_trade + str(((float(args[3]) * int(args[2])) + (float(split_trade[3]) * int(split_trade[2]))) / (int(split_trade[2]) + int(args[2]))) + ',' #EK
             l_trade = l_trade + str(split_trade[4]) + ',' #SL
