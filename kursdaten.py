@@ -10,7 +10,7 @@ def get_stock_data_wotd(stock):
     stock_data = []
     no_data = True
 
-    keys = ["wq5pGbL5D7afdTjXIJuYKPHGZchgsDsDyHGpxHPRsblEWHKoccnavQWdFGHq","dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA","QX5Y9J1tkhFrIF91ADrkfzBznag2NcSjSKABpcVuUV1oHa4IpvBN9yLUmoQV", "Y2TOttXlC9ln7N9EtHSQGJJ87OdLTojOaVqBQrUsTtkgL5e4fqCtgziOxu1v", "KWBFmPRaNMSu2umDP07o7zsWkFMpXedzOtO4gXuvVcCRQbKGKXMzp2pZBcZK"]
+    keys = ["dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA", "Aw17HEYM2AXfV8iqxTb4H93ldtF1YfOAEGEX0u8FxSeEGtLoDY4WO7h9HlwU"]
     key = random.choice(keys)
 
     dt = datetime.today() - timedelta(days=200)
@@ -129,13 +129,13 @@ def get_stock_data(stock):
 
 def get_wechselkurs(currency):
 
-    keys = ["wq5pGbL5D7afdTjXIJuYKPHGZchgsDsDyHGpxHPRsblEWHKoccnavQWdFGHq","dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA","QX5Y9J1tkhFrIF91ADrkfzBznag2NcSjSKABpcVuUV1oHa4IpvBN9yLUmoQV"]
+    keys = ["ADHJFQ0PWWESDOFN","MIPDLAHG0TM780KQ","3A745MIJF40Y96BD","PH163RG7NX7HNVS6","50RLUICECDBVL2C5","S0SUWFRW73KGR4L3","YEGWN1N5CCIKUFA4","CGEZJ7R0RH2LSP2O","JMWK5GAVCQE51BOY","8IKZF486MAFUY8PA","J4R0HIQM39MLEL4P","V8ORD946P5RZOFXV","IG34PJVZ2WWKKPJ6","F9P304S1097CBAR8","F04OPCSNNE3WWIRJ","9KYAVL1CCIZQIDNR","PQG9832OUK0RGZOO","0AYYDZX31BDLE158","23HWNCSDM62JR9XF","QDWK1SULIUTSAAFT","NSNF2E09AOJ0QWM4","YARI43A0R5C0HKAH"]
     key = random.choice(keys)
 
-    url = "https://api.worldtradingdata.com/api/v1/forex?base=" + currency + "&api_token=" + key
+    url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency="+currency+"&to_currency=EUR&apikey=" + key
     resp = requests.get(url)
     wechselkurs = 0
 
-    if "data" in resp.json():
-        wechselkurs = resp.json()["data"]["EUR"]
+    if "Realtime Currency Exchange Rate" in resp.json():
+        wechselkurs = resp.json()["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
         return wechselkurs
