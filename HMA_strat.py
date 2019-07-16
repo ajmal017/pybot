@@ -16,7 +16,8 @@ def check_signal(stock):
     stock_data = get_stock_data_wotd(stock)
 
     if (stock_data[0]["open"] <= 0) and (stock_data[0]["close"] <= 0):
-        return
+        output.append(stock + ' ZERO VALUES!')
+        return output
 
     sma_length = 50
 
@@ -28,9 +29,6 @@ def check_signal(stock):
 
     atr_1_length = 14
     atr_2_length = 1
-
-    if (stock_data[0]["open"] <= 0) and (stock_data[0]["close"] <= 0):
-        return
 
     #get indicator values
 

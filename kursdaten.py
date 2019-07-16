@@ -129,13 +129,39 @@ def get_stock_data(stock):
 
 def get_wechselkurs(currency):
 
-    keys = ["ADHJFQ0PWWESDOFN","MIPDLAHG0TM780KQ","3A745MIJF40Y96BD","PH163RG7NX7HNVS6","50RLUICECDBVL2C5","S0SUWFRW73KGR4L3","YEGWN1N5CCIKUFA4","CGEZJ7R0RH2LSP2O","JMWK5GAVCQE51BOY","8IKZF486MAFUY8PA","J4R0HIQM39MLEL4P","V8ORD946P5RZOFXV","IG34PJVZ2WWKKPJ6","F9P304S1097CBAR8","F04OPCSNNE3WWIRJ","9KYAVL1CCIZQIDNR","PQG9832OUK0RGZOO","0AYYDZX31BDLE158","23HWNCSDM62JR9XF","QDWK1SULIUTSAAFT","NSNF2E09AOJ0QWM4","YARI43A0R5C0HKAH"]
-    key = random.choice(keys)
+    dt = datetime.today()
+    date = dt.strftime('%Y-%m-%d-%H')
 
-    url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency="+currency+"&to_currency=EUR&apikey=" + key
-    resp = requests.get(url)
     wechselkurs = 0
 
-    if "Realtime Currency Exchange Rate" in resp.json():
-        wechselkurs = resp.json()["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
-        return wechselkurs
+    filename = currency + '.txt'
+
+
+    f = open(filename, 'a')
+    f.close()
+
+
+    with open(filename, 'r') as f:
+        for l in f:
+            values = l.split(',')
+            if values[0] == date:
+                wechselkurs = values[1]
+            else:
+
+                keys = ["ADHJFQ0PWWESDOFN","MIPDLAHG0TM780KQ","3A745MIJF40Y96BD","PH163RG7NX7HNVS6","50RLUICECDBVL2C5","S0SUWFRW73KGR4L3","YEGWN1N5CCIKUFA4","CGEZJ7R0RH2LSP2O","JMWK5GAVCQE51BOY","8IKZF486MAFUY8PA","J4R0HIQM39MLEL4P","V8ORD946P5RZOFXV","IG34PJVZ2WWKKPJ6","F9P304S1097CBAR8","F04OPCSNNE3WWIRJ","9KYAVL1CCIZQIDNR","PQG9832OUK0RGZOO","0AYYDZX31BDLE158","23HWNCSDM62JR9XF","QDWK1SULIUTSAAFT","NSNF2E09AOJ0QWM4","YARI43A0R5C0HKAH"]
+                key = random.choice(keys)
+
+                url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency="+currency+"&to_currency=EUR&apikey=" + key
+                resp = requests.get(url)
+
+                if "Realtime Currency Exchange Rate" in resp.json():
+                    wechselkurs = resp.json()["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
+
+                    line = date + ',' + wechselkurs
+
+                    with open(filename, 'w') as f:
+                        f.write(line)
+
+
+
+    return wechselkurs
