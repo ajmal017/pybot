@@ -10,7 +10,7 @@ def get_stock_data_wotd(stock):
     stock_data = []
     no_data = True
 
-    keys = ["dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA", "Aw17HEYM2AXfV8iqxTb4H93ldtF1YfOAEGEX0u8FxSeEGtLoDY4WO7h9HlwU"]
+    keys = ["LSuwWkQtG2WHUC1E8MrVhkCMJYRatV1i6dhtgzdXMTkkl77c9CpEDfLBRcrU","dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA", "Aw17HEYM2AXfV8iqxTb4H93ldtF1YfOAEGEX0u8FxSeEGtLoDY4WO7h9HlwU","Km4QI7U5gK1lgezFhp09lJAr043IHwM48Pt4qTpC3nihaErH7M63EuZ3jlQj", "O28wlEMmh7y2GkHtiNRnRbsAFVkhsRf1UzteC6gxrmO3KlalxCaVkiKPaBDn"]
     key = random.choice(keys)
 
     dt = datetime.today() - timedelta(days=200)
