@@ -17,7 +17,7 @@ def get_stock_data_wotd(stock):
     #date = '2015-01-01'
 
     for i in range(len(keys)):
-
+        key = keys[i]
         url = "https://www.worldtradingdata.com/api/v1/stock?symbol="+stock+"&api_token="+key
         resp = requests.get(url)
 
