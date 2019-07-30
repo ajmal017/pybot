@@ -41,8 +41,8 @@ def get_sl(symbol, date, ek):
         if last_high < stock_data[i]["high"]:
             last_high = stock_data[i]["high"]
 
-        if (trade["TP"] != 0) and (trade["TP"] < last_high - 3*atr[i]):
-            trade["TP"] = last_high - 3*atr[i]
+            if (trade["TP"] != 0) and (trade["TP"] < last_high - 3*atr[i]):
+                trade["TP"] = last_high - 3*atr[i]
 
         if (stock_data[i]["low"] < trade["SL"]):
 
@@ -56,7 +56,9 @@ def get_sl(symbol, date, ek):
         if (stock_data[i]["high"] > trade["TP"]) and trade["SL"] < trade["EK"]:
 
             trade["SL"] = trade["EK"]
+            trade["TP"] = last_high - 3*atr[i]
             output.append(str(stock_data[i]["date"]) + " - TP überschritten -> Anpassung SL auf EK: " + str(trade["SL"]))
+            output.append(str(stock_data[i]["date"]) + " - TP überschritten -> Anpassung TP - 3ATR: " + str(trade["TP"]))
 
         if  (stock_data[i]["low"] < trade["TP"]) and trade["SL"] > trade["EK"]: #SL > EK damit Gewinnmitnahme erst im Profit
 
