@@ -107,8 +107,8 @@ def backtest(stock):
 
             l_count2 += 1
 
-            if (trade["TP"] != 0) and (trade["TP"] < last_high - 3*atr_1[i]):
-                trade["TP"] = last_high - 3*atr_1[i]
+            if (trade["TP"] != 0) and (trade["TP"] < last_high - 4*atr_1[i]):
+                trade["TP"] = last_high - 4*atr_1[i]
 
             if (stock_data[i]["low"] < trade["SL"]):
                 print("SL hit - Sold at " + str(trade["SL"]) + " am " + str(stock_data[i]["date"]))
@@ -136,11 +136,12 @@ def backtest(stock):
 
             if (trade["TP"] > 0) and (stock_data[i]["low"] < trade["TP"]) and trade["SL"] > trade["EK"]: #SL > EK damit Gewinnmitnahme erst im Profit
 
-                print("Gewinnmitnahme (2.5 ATR) - Profit: " + str((trade["TP"] - trade["EK"])*trade["Anzahl"]/2) +"€ "+ str((trade["TP"] - trade["EK"]) / trade["EK"]*100) + "%")
-                sum += (trade["TP"] - trade["EK"])*trade["Anzahl"]/2
+                print("Gewinnmitnahme (ATR) - Profit: " + str((trade["TP"] - trade["EK"])*trade["Anzahl"]) +"€ "+ str((trade["TP"] - trade["EK"]) / trade["EK"]*100) + "%")
+                sum += (trade["TP"] - trade["EK"])*trade["Anzahl"]
                 print("sum = " + str(sum))
-                trade["TP"] = 0
-                trade["Anzahl"] = trade["Anzahl"]/2
+                #trade["TP"] = 0
+                #trade["Anzahl"] = trade["Anzahl"]/2
+                trade = {"position" : "$", "EK" : 0, "SL" : 0, "TP": 0, "Anzahl" : 0}
 
 
             if ((sma[i] - 1.5 * atr_1[i]) > trade["SL"]) and stock_data[i]["high"] > (sma[i] - 1.5 * atr_1[i]):
@@ -206,7 +207,7 @@ def backtest(stock):
 
                         trade["position"] = "L"
                         trade["EK"] = stock_data[i]["close"]
-                        trade["Anzahl"] = round((0.02*sum)/(2.5*atr_1[i]))
+                        trade["Anzahl"] = round((0.005*sum)/(2.5*atr_1[i]))
                         trade["SL"] = stock_data[i]["close"] - (2.5*atr_1[i])
                         trade["TP"] = stock_data[i]["close"] + (2.5*atr_1[i])
 
@@ -216,7 +217,7 @@ def backtest(stock):
                         print("Stop Loss 2.5 ATR: "+str(trade["SL"]))
 
                         break_even = trade["TP"]
-
+                    '''
                     if (trade["SL"] > break_even) and (stock_data[i]["close"] > break_even):
 
                         l_anzahl = 0
@@ -230,6 +231,7 @@ def backtest(stock):
                         print("TP: " + str(trade["TP"]))
 
                         break_even = trade["TP"]
+                    '''
 
 ########################GO SHORT##################################
         '''

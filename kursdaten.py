@@ -10,7 +10,16 @@ def get_stock_data_wotd(stock):
     stock_data = []
     no_data = False
 
-    keys = ["A3fPSXJ7NdydUTW0x6x6mHiUc33CW7NZU7ZoAskF6Hqe4WC2TinRWVQrc9Sx","LSuwWkQtG2WHUC1E8MrVhkCMJYRatV1i6dhtgzdXMTkkl77c9CpEDfLBRcrU","dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA", "Aw17HEYM2AXfV8iqxTb4H93ldtF1YfOAEGEX0u8FxSeEGtLoDY4WO7h9HlwU","Km4QI7U5gK1lgezFhp09lJAr043IHwM48Pt4qTpC3nihaErH7M63EuZ3jlQj", "O28wlEMmh7y2GkHtiNRnRbsAFVkhsRf1UzteC6gxrmO3KlalxCaVkiKPaBDn"]
+    keys = ["elcWQss9HzmuSGhiaYo3dkxR1Dl2gwPEfoau4vNutSwp4RxNDmzZ1ZIBheSk",
+"F4M1mbiAPgYF2DIq069wNRhQpYZOFJWKwrvFC2AGBAF0VzutLmm9ESF5WVNp",
+"A3fPSXJ7NdydUTW0x6x6mHiUc33CW7NZU7ZoAskF6Hqe4WC2TinRWVQrc9Sx",
+"cqjMCVkYU7S79Av4Cua2UppHJk9SlURExfquHdx509nJGCOabUbm6yqIwZ1v",
+"dCnmxq7wmGSWrgdbU0zUeAvflvqNE2n9Cc9t4K3iNp1bpi6b2Y7wbaHy92uA",
+"Aw17HEYM2AXfV8iqxTb4H93ldtF1YfOAEGEX0u8FxSeEGtLoDY4WO7h9HlwU",
+"9ui6I97ecmousE1XJ2nDHMsNztyia9fpSXgobRRPll4jGhqDSL260XiGXYPg",
+"w6r2Fz0FiNTbKCJ8URlMI6svDvEVAUFr2gpvpgUN0TRvQdYLUK13T0QASoYW",
+"cCz2Xmvobo7nERrfvqaAhPwkYlr8Lb3LgoGq9lUkRZvDA9vLZ0jMJchTBbmH",
+"KsUfOdaoCev8ScIlGCPJ4Z1vhHQsAd8q4SQDXYlh12enRK86cacB9QpLrdGK"]
 
     dt = datetime.today() - timedelta(days=200)
     date = dt.strftime('%Y-%m-%d')
@@ -24,7 +33,7 @@ def get_stock_data_wotd(stock):
         if "data" in resp.json():
 
             if resp.json()["data"][0]["currency"] != "EUR":
-                wechselkurs = float(get_wechselkurs(resp.json()["data"][0]["currency"]))
+                wechselkurs = 1#float(get_wechselkurs(resp.json()["data"][0]["currency"]))
 
             trading_day["date"] = resp.json()["data"][0]["last_trade_time"][:10]
 

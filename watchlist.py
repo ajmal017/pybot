@@ -5,13 +5,18 @@ from HMA_strat_backtest import backtest
 from sl_rechner import get_sl
 from kursdaten import get_wechselkurs
 #from darvas import backtest
+from gaps import get_gaps
+from indicators_full import get_rsi
+from kursdaten import get_stock_data_wotd
 
 #check_trend('PYPL')
-backtest("WDI.DE")
+#backtest("SAP.DE")
 #get_sl("WDI.DE", "2019-04-23", 120.00)
 #check_signal("WDI.DE")
 #print(get_wechselkurs('USD'))
-
+#
+get_gaps("TTD")
+#print(get_rsi(get_stock_data_wotd('NVDA'),14))
 #DAX
 '''
 #adidas

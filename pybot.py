@@ -3,8 +3,8 @@ import logging
 import requests
 import re
 from datetime import time
-from  HMA_strat import check_signal
-from sl_rechner import get_sl
+from  gap_signals import check_signal
+from chande_kroll_stop import get_sl
 from kursdaten import get_stock_data_wotd
 from time import sleep
 
@@ -38,59 +38,33 @@ def get_stops(bot):
             line = l
             trades = line.split(';')
 
-            i = 0
             l_trades = []
 
             for trade in trades:
                 split_trade = trade.split(',')
 
                 output = []
-                output = get_sl(split_trade[0], split_trade[1], float(split_trade[3]))
-
-                sl = output[-3][14:]
-                tp = output[-2][14:]
-
-                l_trades.append(" ")
-                l_trades[i] = split_trade[0] + ','
-                l_trades[i] = l_trades[i] + split_trade[1] + ','
-                l_trades[i] = l_trades[i] + split_trade[2] + ',' #Anzahl
-                l_trades[i] = l_trades[i] + str(split_trade[3]) + ',' #EK
-                l_trades[i] = l_trades[i] + str(sl) + ',' #SL
-                l_trades[i] = l_trades[i] + str(tp)#TP
-                #trades.remove(trade)
-
-                i+=1
+                output = get_sl(split_trade[0])
 
                 for k in range(len(output)):
                     bot.send_message(chat_id = g_mychat_id, text = output[k])
-
-
-    line = ""
-
-    for trade in l_trades:
-        if (line != ""):
-            line = line + ';'
-        line = line + trade
-
-    with open('PF.txt', 'w') as f:
-
-        f.write(line)
-
 
 def bop(bot, update):
     url = get_url()
     chat_id = update.message.chat_id
     bot.send_photo(chat_id=chat_id, photo=url)
 
-
 def signals(bot, update, args):
-
+    bot.send_message(chat_id = g_mychat_id, text = "!!! Signale aus der WL !!!")
     if len(args) > 0:
         for i in range(len(args)):
             output = []
             output = check_signal(args[i])
 
             chat_id = update.message.chat_id
+
+            if len(output) == 0:
+                bot.send_message(chat_id = g_mychat_id, text = args[i] + " kein Signal")
 
             for k in range(len(output)):
                 bot.send_message(chat_id = chat_id, text = output[k])
@@ -100,12 +74,12 @@ def signals(bot, update, args):
 def stops(bot, update, args):
 
     if len(args) > 0:
-        if len(args) != 3:
-            bot.send_message(chat_id = chat_id, text = 'Symbol Datum EK')
+        if len(args) != 1:
+            bot.send_message(chat_id = chat_id, text = 'Symbol')
         else:
             for i in range(len(args)):
                 output = []
-                output = get_sl(args[0], args[1], args[2])
+                output = get_sl(args[0])
 
                 chat_id = update.message.chat_id
 
@@ -116,7 +90,6 @@ def stops(bot, update, args):
 
 def daily_signals(bot, job):
 
-    bot.send_message(chat_id = g_mychat_id, text = "!!! Signale aus der WL !!!")
     wl_signals(bot)
 
 def daily_stops(bot, job):
@@ -199,8 +172,8 @@ def show_wl(bot, update):
 
 def buy(bot, update, args):
 
-    if (len(args) != 6):
-        bot.send_message(chat_id=update.message.chat_id, text="Symbol Datum Anzahl EK SL TP!")
+    if (len(args) != 2):
+        bot.send_message(chat_id=update.message.chat_id, text="Symbol EK!")
         return
 
     line = ""
@@ -211,26 +184,8 @@ def buy(bot, update, args):
 
     trades = line.split(';')
 
-    l_nachkauf = False
-    l_trade = ""
-
-    for trade in trades:
-        split_trade = trade.split(',')
-        if args[0] == split_trade[0]:
-            bot.send_message(chat_id=update.message.chat_id, text=args[0] + " Nachkauf!")
-
-            l_trade = split_trade[0] + ','
-            l_trade = l_trade + args[1] + ','
-            l_trade = l_trade + str(int(split_trade[2]) + int(args[2])) + ',' #Anzahl
-            l_trade = l_trade + str(((float(args[3]) * int(args[2])) + (float(split_trade[3]) * int(split_trade[2]))) / (int(split_trade[2]) + int(args[2]))) + ',' #EK
-            l_trade = l_trade + str(split_trade[4]) + ',' #SL
-            l_trade = l_trade + str(split_trade[5])#TP
-            trades.remove(trade)
-            l_nachkauf = True
-
-    if not l_nachkauf:
-        l_trade = args[0] + ',' + args[1] + ',' + args[2] + ',' + args[3] + ',' + args[4] + ',' + args[5]
-        bot.send_message(chat_id=update.message.chat_id, text=args[0] + " Erstkauf!")
+    l_trade = args[0] + ',' + args[1]
+    bot.send_message(chat_id=update.message.chat_id, text="Kauf " + args[0])
 
     trades.append(l_trade)
 
@@ -244,10 +199,9 @@ def buy(bot, update, args):
     with open('PF.txt', 'w') as f:
         f.write(line)
 
-
 def sell(bot, update, args):
 
-    if len(args) == 2:
+    if len(args) == 1:
 
         with open('PF.txt', 'r') as f:
             for l in f:
@@ -260,9 +214,10 @@ def sell(bot, update, args):
         for trade in trades:
             split_trade = trade.split(',')
             if args[0] == split_trade[0]:
-                bot.send_message(chat_id=update.message.chat_id, text=args[0] + " " + args[1] + " von " + split_trade[2] + " Aktien wurden verkauft!")
+                bot.send_message(chat_id=update.message.chat_id, text=args[0] + "  verkauft!")
                 trades.remove(trade)
                 l_vorhanden = True
+                break
 
         if not l_vorhanden:
             bot.send_message(chat_id=update.message.chat_id, text=args[0] + " konnte im Portfolio nicht gefunden werden!")
@@ -278,9 +233,7 @@ def sell(bot, update, args):
             f.write(line)
 
     else:
-
-        bot.send_message(chat_id=update.message.chat_id, text="Aktie Anzahl!")
-
+        bot.send_message(chat_id=update.message.chat_id, text="Symbol!")
 
 def show_pf(bot, update):
 
@@ -301,12 +254,10 @@ def show_pf(bot, update):
         l_kurs = 0
         l_kurs = stock_data[0]["close"]
         l_entwicklung = 0
-        l_entwicklung = (l_kurs - float(split_trade[3]))/float(split_trade[3])*100
+        l_entwicklung = (l_kurs - float(split_trade[1]))/float(split_trade[1])*100
 
-        l_text = split_trade[0] + '\nAnzahl: ' + str(split_trade[2]) + "\nEK: " + str(split_trade[3]) + "\nakt. Kurs: " + str(l_kurs) + '\nEntwicklung' + ' ' + str(l_entwicklung) + '%'
+        l_text = split_trade[0] + "\nEK: " + str(split_trade[1]) + "\nakt. Kurs: " + str(l_kurs) + '\nEntwicklung' + ' ' + str(l_entwicklung) + '%'
         bot.send_message(chat_id=update.message.chat_id, text=l_text)
-
-
 
 def help(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, I'm helping!")
@@ -334,8 +285,6 @@ def help(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text= )
     '''
 
-
-
 ##################################################################################################
 def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
@@ -348,26 +297,6 @@ def caps(bot, update, args):
     bot.send_message(chat_id=update.message.chat_id, text=text_caps)
 
 
-
-'''
-def main():
-
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
-
-    updater = Updater(g_bot_id)
-    jobq = updater.job_queue
-    dp = updater.dispatcher
-    dp.add_handler(CommandHandler('bop',bop))
-    updater.start_polling()
-    updater.idle()
-
-    daily_job = jobq.run_repeating(signals)
-
-if __name__ == '__main__':
-    main()
-
-
-'''
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 
 updater = Updater(g_bot_id)

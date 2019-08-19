@@ -77,69 +77,75 @@ def backtest(stock):
 ##################WENN AUFWÄRTS################
 
 
-        if box["Done"] and stock_data[i]["high"] > box["high"] + atr[i]:
+        if (box["Done"] or box["Trend"] == "BUP") and stock_data[i]["high"] > box["high"] + atr[i]:
 
-            if box["Trend"] == "DOWN":
+            if box["Trend"] == "DOWN" or box["Trend"] == "BUP":
                 box_count = 0
 
             box["Done"] = False
             box["Trend"] = "UP"
             box["low"] = box["high"]
             box["high"] = stock_data[i]["high"]
-            print("new upbox")
+            #print(stock_data[i]["date"] + ' ' + "new upbox " +str(box["high"]) + " " + str(box["low"]))
 
             cd_20 = 20
 
         if not box["Done"] and box["Trend"] == "UP":
-            if stock_data[i]["high"] >= box["high"]:
+            if stock_data[i]["high"] > box["high"]:
                 box["high"] = stock_data[i]["high"]
-            else:
+                #print(stock_data[i]["date"] + " box high = " + str(box["high"]))
+            elif stock_data[i]["high"] < box["high"] - 0.5*atr[i]:
                 box["Trend"] = "BDOWN"
-                print("back down")
+                #print(stock_data[i]["date"] + ' ' + "back down")
 
-        if not box["Done"] and box["Trend"] == "BDOWN" and stock_data[i]["low"] > stock_data[i+1]["low"]:
+        if not box["Done"] and box["Trend"] == "BDOWN" and stock_data[i]["low"] > stock_data[i+1]["low"] + 0.5*atr[i]:
             box["low"] = stock_data[i+1]["low"]
             box["Done"] = True
             box["Trend"] = "UP"
             box_count += 1
-            print("upbox no. " + str(box_count) + " done")
+            #print(stock_data[i]["date"] + ' ' + "upbox no. " + str(box_count) + " done")
 
 
 
 ##############WENN RUNTER##########################
 
-        if box["Done"] and stock_data[i]["low"] < box["low"] - atr[i]:
+        if (box["Done"] or box["Trend"] == "BDOWN") and stock_data[i]["low"] < box["low"] - atr[i]:
 
-            if box["Trend"] == "UP":
+            if box["Trend"] == "UP" or  box["Trend"] == "BDOWN":
                 box_count = 0
 
             box["Done"] = False
             box["Trend"] = "DOWN"
             box["high"] = box["low"]
             box["low"] = stock_data[i]["low"]
-            print("new downbox")
+            #print(stock_data[i]["date"] + ' ' + "new downbox")
 
             cd_20 = 20
 
         if not box["Done"] and box["Trend"] == "DOWN":
-            if stock_data[i]["low"] <= box["low"]:
-                box["high"] = stock_data[i]["high"]
-            else:
+            if stock_data[i]["low"] < box["low"]:
+                box["low"] = stock_data[i]["low"]
+            elif stock_data[i]["low"] > box["low"] + 0.5*atr[i]:
                 box["Trend"] = "BUP"
-                print("back up")
+                #print(stock_data[i]["date"] + ' ' + "back up")
 
-        if not box["Done"] and box["Trend"] == "BUP" and stock_data[i]["high"] < stock_data[i+1]["high"]:
+        if not box["Done"] and box["Trend"] == "BUP" and stock_data[i]["high"] < stock_data[i+1]["high"] - 0.5*atr[i]:
             box["high"] = stock_data[i+1]["high"]
             box["Done"] = True
             box["Trend"] = "DOWN"
             box_count += 1
-            print("downbox no. " + str(box_count) + " done")
+            #print(stock_data[i]["date"] + ' ' + "downbox no. " + str(box_count) + " done")
 
 #########################################################################################
 
         if cd_20 < 0:
-            box["low"] = min(lows_20)
-            box["high"] = max(highs_20)
+
+            if box["low"] < min(lows_20):
+                box["low"] = min(lows_20)
+            if box["high"] > max(highs_20):
+                box["high"] = max(highs_20)
+
+
             lows_20 = lows_20[1:]
             highs_20 = highs_20[1:]
 
@@ -150,14 +156,14 @@ def backtest(stock):
 
 
 
-        if trade["position"] == "$" and not box["Done"] and box_count >= 2:
+        if trade["position"] == "$" and box["Done"] and box_count >= 3:
 
             if box["Trend"] == 'UP':
 
                 trade["position"] = "L"
                 trade["EK"] = stock_data[i]["close"]
-                trade["Anzahl"] = round((0.02*sum)/(trade["EK"] - (box["low"]-atr[i])))
-                trade["SL"] = box["low"]
+                trade["Anzahl"] = round((0.005*sum)/(2.5*atr[i]))
+                trade["SL"] = trade["EK"] - 2.5*atr[i]
 
 
                 print("--------------------!!!--------------------")
@@ -173,19 +179,33 @@ def backtest(stock):
 
             l_count2 += 1
 
+            '''
             if (stock_data[i]["low"] < trade["SL"]):
 
-                print(str(stock_data[i]["date"]) + "Verkauf 1. Hälfte - Profit: " + str((trade["SL"] - trade["EK"])*trade["Anzahl"]/2) +"€ "+ str((trade["SL"] - trade["EK"]) / trade["EK"]*100) + "%")
-                sum += (trade["SL"] - trade["EK"])*trade["Anzahl"]/2
+                print(str(stock_data[i]["date"]) + "Verkauf 1. Hälfte - Profit: " + str((trade["SL"] - trade["EK"])*trade["Anzahl"]) +"€ "+ str((trade["SL"] - trade["EK"]) / trade["EK"]*100) + "%")
+                sum += (trade["SL"] - trade["EK"])*trade["Anzahl"]
                 print("sum = " + str(sum))
                 trade["SL"] = 0
+                trade = {"position" : "$", "EK" : 0, "Anzahl" : 0, "SL" : 0, "TP": 0}
 
-            if box["Trend"] == "DOWN" and box_count == 1 and not box["Done"]:
+            '''
+            if (box["Trend"] == "DOWN" and box_count == 1 and not box["Done"]):
 
-                print(str(stock_data[i]["date"]) + "Verkauf 2. Hälfte - Profit: " + str((box["high"] - trade["EK"])*trade["Anzahl"]/2) +"€ "+ str((box["high"] - trade["EK"]) / trade["EK"]*100) + "%")
-                sum += (box["high"] - trade["EK"])*trade["Anzahl"]/2 #box["high"] weil jetzt == altes box low
+                print(str(stock_data[i]["date"]) + "Verkauf 2. Box - Profit: " + str((box["high"] - trade["EK"])*trade["Anzahl"]) +"€ "+ str((box["high"] - trade["EK"]) / trade["EK"]*100) + "%")
+                sum += (box["high"] - trade["EK"])*trade["Anzahl"] #box["high"] weil jetzt == altes box low
                 print("sum = " + str(sum))
                 trade = {"position" : "$", "EK" : 0, "Anzahl" : 0, "SL" : 0, "TP": 0}
 
+            if (stock_data[i]["low"] < trade["SL"]):
+
+                print(str(stock_data[i]["date"]) + "Verkauf SL - Profit: " + str((trade["SL"] - trade["EK"])*trade["Anzahl"]) +"€ "+ str((box["high"] - trade["EK"]) / trade["EK"]*100) + "%")
+                sum += (trade["SL"] - trade["EK"])*trade["Anzahl"]
+                print("sum = " + str(sum))
+                trade = {"position" : "$", "EK" : 0, "Anzahl" : 0, "SL" : 0, "TP": 0}
+
+
+            #if trade["SL"] != 0:
+                #trade["SL"] = box["low"] - atr[i]
+                #print(stock_data[i]["date"] + ' ' + str(trade["SL"]<stock_data[i]["low"]))
 
     print(str(sum) + " " + str(l_count2) + "/" + str(l_count1))

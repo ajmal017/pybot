@@ -171,3 +171,48 @@ def get_hma(stock_data, hma_length):
     hma_values = get_wma(wma_diff, round(sqrt(hma_length)))
 
     return hma_values
+
+def get_rsi(stock_data, rsi_length):
+
+    rsi_values = []
+    gains = 0
+    losses = 0
+    rsi = 0
+
+    for i in range(-2, (-1)*(len(stock_data))-1,-1):
+
+        if i >= -1*rsi_length-1:
+            if stock_data[i]["close"] - stock_data[i+1]["close"] > 0:
+                gains += stock_data[i]["close"] - stock_data[i+1]["close"]
+            else:
+                losses += stock_data[i+1]["close"] - stock_data[i]["close"]
+            if i == -1*rsi_length-1:
+                avg_gains = gains/rsi_length
+                avg_losses = losses/rsi_length
+
+
+        elif i < -1*rsi_length-1:
+
+            gains = 0
+            losses = 0
+
+            if stock_data[i]["close"] - stock_data[i+1]["close"] > 0:
+                gains = stock_data[i]["close"] - stock_data[i+1]["close"]
+
+            else:
+                losses = stock_data[i+1]["close"] - stock_data[i]["close"]
+
+            avg_gains = (avg_gains*(rsi_length-1) + gains)/rsi_length
+            avg_losses = (avg_losses*(rsi_length-1) + losses)/rsi_length
+
+        if i <= -1*rsi_length-1:
+
+            if avg_losses == 0:
+                rsi = 100
+            else:
+                rsi = 100-(100/(1+(avg_gains/avg_losses)))
+
+            rsi_values.append(rsi)
+
+    rsi_values = rsi_values[::-1]
+    return rsi_values
