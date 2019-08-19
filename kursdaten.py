@@ -79,9 +79,9 @@ def get_stock_data_wotd(stock):
         else:
             print("NO DATA!")
 
-
-
-    return get_stock_data(stock)
+    trading_day = {"date" : "1900-01-01", "open" : 0, "high" : 0, "low" : 0, "close" : 0, "volume" : 0}
+    stock_data.append(trading_day)
+    return stock_data
 
 
 def get_stock_data(stock):
