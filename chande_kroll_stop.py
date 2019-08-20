@@ -1,12 +1,12 @@
 from indicators_full import get_atr
 from kursdaten import get_stock_data_wotd
 
-def get_sl(symbol):
+def get_sl(stock):
 
     output = []
 
     #get stock data
-    stock_data = get_stock_data_wotd(symbol)
+    stock_data = get_stock_data_wotd(stock)
 
     if (stock_data[0]["open"] <= 0) and (stock_data[0]["close"] <= 0):
         output.append("NO DATA")
@@ -22,7 +22,7 @@ def get_sl(symbol):
 
     for i in range(30, 0, -1):
         stops_15 = stops_15[1:]
-        stops_15.append(stock_data[i]["high"]-5*atr_1[i])
+        stops_15.append(stock_data[i]["high"]-5*atr[i])
 
 
     output.append(stock + " aktueller SL: " + str(max(stops_15)))

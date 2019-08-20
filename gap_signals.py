@@ -47,7 +47,7 @@ def check_signal(stock):
 
             vol_avg = vol_avg/14
 
-            if (rsi[0] < 75 and stock_data[0]["volume"] > 3*vol_avg) or stock_data[0]["volume"] > 4*vol_avg:
+            if (rsi[0] < 75 and stock_data[0]["volume"] > 2*vol_avg) or stock_data[0]["volume"] > 3.5*vol_avg:
                     trade = {"EK" : 0, "Anzahl" : 0, "SL" : 0}
                     trade["EK"] = stock_data[0]["close"]
                     trade["SL"] = get_sl(stock)
