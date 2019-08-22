@@ -38,7 +38,7 @@ def check_signal(stock):
 
     stock_data = stock_data[:min_length]
 
-    if ((stock_data[0]["close"] - stock_data[1]["close"]) >= 1.25*atr_1[1]) and ((sma[0] - sma[15]) > 0):
+    if ((stock_data[0]["close"] - stock_data[1]["close"]) >= atr_1[1]) and ((sma[0] - sma[15]) > 0):
             l_high = 0
             vol_avg = 0
             for k in range(20):
@@ -48,10 +48,14 @@ def check_signal(stock):
 
             vol_avg = vol_avg/20
 
-            if (cci[0] * stock_data[0]["volume"]/vol_avg)  > 280 :
+            if (cci[0] * stock_data[0]["volume"]/vol_avg)  > 250 :
+                stops_15 = []
+                for i in range(15):
+                    stops_15.append(stock_data[i]["high"]-5*atr[i])
+
                     trade = {"EK" : 0, "Anzahl" : 0, "SL" : 0}
                     trade["EK"] = stock_data[0]["close"]
-                    trade["SL"] = get_sl(stock)
+                    trade["SL"] = max(stops_15)
                     trade["Anzahl"] = round(300/(trade["EK"] - trade["SL"]))
 
                     output.append(stock + " - " + str(trade["Anzahl"]) + " Stück für " + str(trade["EK"]) + "SL = " + str(trade["SL"]))

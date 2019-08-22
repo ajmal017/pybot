@@ -48,9 +48,14 @@ def check_signal(stock):
             vol_avg = vol_avg/14
 
             if (rsi[0] < 75 and stock_data[0]["volume"] > 2*vol_avg) or stock_data[0]["volume"] > 3.5*vol_avg:
+
+                    stops_15 = []
+                    for i in range(15):
+                        stops_15.append(stock_data[i]["high"]-5*atr[i])
+                        
                     trade = {"EK" : 0, "Anzahl" : 0, "SL" : 0}
                     trade["EK"] = stock_data[0]["close"]
-                    trade["SL"] = get_sl(stock)
+                    trade["SL"] = max(stops_15)
                     trade["Anzahl"] = round(300/(trade["EK"] - trade["SL"]))
 
                     output.append(stock + " - " + str(trade["Anzahl"]) + " Stück für " + str(trade["EK"]) + "SL = " + str(trade["SL"]))

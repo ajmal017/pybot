@@ -75,7 +75,7 @@ def backtest(stock):
 
         #Check SIGNAL
 
-        if trade["position"] == '$' and ((stock_data[i]["close"] - stock_data[i+1]["close"]) >= 1.25*atr_1[i+1]) and ((sma[i] - sma[i+15]) > 0):
+        if trade["position"] == '$' and ((stock_data[i]["close"] - stock_data[i+1]["close"]) >= atr_1[i+1]) and ((sma[i] - sma[i+15]) > 0):
                 l_high = 0
                 for k in range(20):
                     vol_avg += stock_data[i+k]["volume"]
@@ -86,7 +86,7 @@ def backtest(stock):
 
                 vol_avg = vol_avg/20
 
-                if (cci[i] * stock_data[i]["volume"]/vol_avg)  > 280 :
+                if (cci[i] * stock_data[i]["volume"]/vol_avg)  > 250 :
 
                     trade["EK"] = stock_data[i-1]["open"]
                     trade["SL"] = max(stops_15)

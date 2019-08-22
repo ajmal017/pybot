@@ -16,7 +16,7 @@ from vol_cci import backtest
 #check_signal("WDI.DE")
 #print(get_wechselkurs('USD'))
 #
-backtest("MTCH")
+backtest("NVDA")
 #print(get_rsi(get_stock_data_wotd('NVDA'),14))
 #DAX
 '''
