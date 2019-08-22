@@ -21,7 +21,7 @@ def get_stock_data_wotd(stock):
 "cCz2Xmvobo7nERrfvqaAhPwkYlr8Lb3LgoGq9lUkRZvDA9vLZ0jMJchTBbmH",
 "KsUfOdaoCev8ScIlGCPJ4Z1vhHQsAd8q4SQDXYlh12enRK86cacB9QpLrdGK"]
 
-    dt = datetime.today() - timedelta(days=2000)
+    dt = datetime.today() - timedelta(days=200)
     date = dt.strftime('%Y-%m-%d')
     #date = '2015-01-01'
 

@@ -1,6 +1,6 @@
 import requests
 import json
-from indicators_full import get_atr, get_sma, get_rsi
+from indicators_full import get_atr, get_sma, get_cci
 from kursdaten import get_stock_data_wotd
 from time import sleep
 
