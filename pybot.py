@@ -3,7 +3,7 @@ import logging
 import requests
 import re
 from datetime import time
-from  gap_signals import check_signal
+from  vcci import check_signal
 from chande_kroll_stop import get_sl
 from kursdaten import get_stock_data_wotd
 from time import sleep
