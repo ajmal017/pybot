@@ -53,11 +53,11 @@ def check_signal(stock):
                 for i in range(15):
                     stops_15.append(stock_data[i]["high"]-5*atr_1[i])
 
-                    trade = {"EK" : 0, "Anzahl" : 0, "SL" : 0}
-                    trade["EK"] = stock_data[0]["close"]
-                    trade["SL"] = max(stops_15)
-                    trade["Anzahl"] = round(300/(trade["EK"] - trade["SL"]))
+                trade = {"EK" : 0, "Anzahl" : 0, "SL" : 0}
+                trade["EK"] = stock_data[0]["close"]
+                trade["SL"] = max(stops_15)
+                trade["Anzahl"] = round(300/(trade["EK"] - trade["SL"]))
 
-                    output.append(stock + " - " + str(trade["Anzahl"]) + " Stück für " + str(trade["EK"]) + "SL = " + str(trade["SL"]))
+                output.append(stock + " - " + str(trade["Anzahl"]) + " Stück für " + str(trade["EK"]) + "SL = " + str(trade["SL"]))
 
     return output
