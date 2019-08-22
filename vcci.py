@@ -51,7 +51,7 @@ def check_signal(stock):
             if (cci[0] * stock_data[0]["volume"]/vol_avg)  > 250 :
                 stops_15 = []
                 for i in range(15):
-                    stops_15.append(stock_data[i]["high"]-5*atr[i])
+                    stops_15.append(stock_data[i]["high"]-5*atr_1[i])
 
                     trade = {"EK" : 0, "Anzahl" : 0, "SL" : 0}
                     trade["EK"] = stock_data[0]["close"]

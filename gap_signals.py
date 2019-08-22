@@ -51,8 +51,8 @@ def check_signal(stock):
 
                     stops_15 = []
                     for i in range(15):
-                        stops_15.append(stock_data[i]["high"]-5*atr[i])
-                        
+                        stops_15.append(stock_data[i]["high"]-5*atr_1[i])
+
                     trade = {"EK" : 0, "Anzahl" : 0, "SL" : 0}
                     trade["EK"] = stock_data[0]["close"]
                     trade["SL"] = max(stops_15)
