@@ -40,6 +40,7 @@ def check_signal(stock):
 
     if ((stock_data[0]["close"] - stock_data[1]["close"]) >= 1.25*atr_1[1]) and ((sma[0] - sma[15]) > 0):
             l_high = 0
+            vol_avg = 0
             for k in range(20):
                 vol_avg += stock_data[k]["volume"]
                 if stock_data[k]["high"] > l_high:
