@@ -1,6 +1,7 @@
 import requests
 import json
-from indicators_full import get_atr, get_sma, get_vcci
+from indicators_full import get_atr, get_sma
+from indicators import get_vcci
 from kursdaten import get_stock_data_wotd
 from time import sleep
 
@@ -27,7 +28,7 @@ def check_signal(stock):
 
     atr_1 = get_atr(stock_data, atr_1_length)
 
-    cci = get_vcci(stock_data, vcci_length)
+    vcci = get_vcci(stock_data, vcci_length)
 
     # Alle Listen so lange machen, wie die kürzeste, damit von hinten durchiteriert werden kann
     min_length = min(len(sma),len(atr_1), len(vcci))
@@ -39,32 +40,33 @@ def check_signal(stock):
     stock_data = stock_data[:min_length]
 
 
-    if (vcci > 200 and (stock_data[0]["close"] - stock_data[1]["close"]) >= atr_1[1]):
-            l_high = 0
-            vol_avg = 0
+    if (vcci[0] > 200 and (stock_data[0]["close"] - stock_data[1]["close"]) >= atr_1[1]):
+        l_high = 0
+        vol_avg = 0
 
-            for i in range(20):
-                vol_avg += stock_data[i]["volume"]
+        for i in range(20):
+            vol_avg += stock_data[i]["volume"]
 
-            vol_avg = vol_avg/20
+        vol_avg = vol_avg/20
 
-            if stock_data[0]["volume"] > vol_avg:
+        if stock_data[0]["volume"] > vol_avg:
 
 
-                for i in range(1, 100):
-                    if l_high < stock_data[i]["close"]:
-                        l_high = (stock_data[i]["close"]
-                if (stock_data[0]["close"] > l_high):
+            for i in range(1, 100):
+                if l_high < stock_data[i]["close"]:
+                    l_high = stock_data[i]["close"]
 
-                    stops_15 = []
-                    for i in range(15):
-                        stops_15.append(stock_data[i]["high"]-5*atr_1[i])
+            if (stock_data[0]["close"] > l_high):
 
-                    trade = {"EK" : 0, "Anzahl" : 0, "SL" : 0}
-                    trade["EK"] = stock_data[0]["close"]
-                    trade["SL"] = max(stops_15)
-                    trade["Anzahl"] = round(300/(trade["EK"] - trade["SL"]))
+                stops_15 = []
+                for i in range(15):
+                    stops_15.append(stock_data[i]["high"]-5*atr_1[i])
 
-                    output.append(stock + " - " + str(trade["Anzahl"]) + " Stück für " + str(trade["EK"]) + "SL = " + str(trade["SL"]))
+                trade = {"EK" : 0, "Anzahl" : 0, "SL" : 0}
+                trade["EK"] = stock_data[0]["close"]
+                trade["SL"] = max(stops_15)
+                trade["Anzahl"] = round(300/(trade["EK"] - trade["SL"]))
+
+                output.append(stock + " - " + str(trade["Anzahl"]) + " Stück für " + str(trade["EK"]) + "SL = " + str(trade["SL"]))
 
     return output

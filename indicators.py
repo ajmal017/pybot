@@ -75,7 +75,7 @@ def get_vcci(stock_data,vcci_length):
 
     vsma_values = vsma_values[::-1]
     vcci_values = []
-
+    vcci = 0
     sma_values = get_sma(stock_data, vcci_length)
 
     for i in range(5):
@@ -83,7 +83,7 @@ def get_vcci(stock_data,vcci_length):
         moving_avg = 0.0000000000
         abw_ma = 0.0000000000
 
-        abw_ma = abs(stock_data[i]["close"]-sma_values[k])
+        abw_ma = abs(stock_data[i]["close"]-sma_values[i])
 
         vcci = (stock_data[i]["close"]-moving_avg)/(0.015*abw_ma)*stock_data[i]["volume"]/vsma_values[i]
         vcci_values.append(vcci)
