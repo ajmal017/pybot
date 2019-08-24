@@ -38,7 +38,6 @@ def check_signal(stock):
 
     stock_data = stock_data[:min_length]
 
-    output.append(str(vcci[0]))
     if (vcci[0] > 200 and (stock_data[0]["close"] - stock_data[1]["close"]) >= atr_1[1]):
         l_high = 0
         vol_avg = 0
