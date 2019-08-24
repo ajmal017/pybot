@@ -3,7 +3,43 @@ import json
 from math import sqrt, floor
 #from math import sqrt
 
+def get_vcci(stock_data,vcci_length):
 
+    vsma_values = []
+
+    for i in range(1,len(stock_data) - (vcci_length-2)):
+
+        vsma = 0.0000000000
+
+        for k in range(vcci_length):
+            #Rückwärts durch Preise iterieren
+            #[-1] ist letztes Element
+            # k ist Iterator bis sma_length
+            #erstes Ergebnis ist sma von vor len(stock_data)+k-1 Tagen
+            vsma += stock_data[(i*(-1))-k]["volume"]
+
+        vsma = vsma/vcci_length
+        vsma_values.append(vsma)
+
+    vsma_values = vsma_values[::-1]
+    vcci_values = []
+    vcci = 0
+    cci = 0
+    sma_values = get_sma(stock_data, vcci_length)
+
+    for i in range(len(sma_values)-(vcci_length-1)):
+
+        abw_ma = 0.0000000000
+
+        for k in range(vcci_length):
+            abw_ma += abs(stock_data[i+k]["close"]-sma_values[i])
+        abw_ma = abw_ma/vcci_length
+
+        cci = ((stock_data[i]["close"]-sma_values[i])/(0.015*abw_ma))
+        vcci = cci*stock_data[i]["volume"]/vsma_values[i]
+        vcci_values.append(vcci)
+
+    return vcci_values
 
 def get_cci(stock_data,cci_length):
 

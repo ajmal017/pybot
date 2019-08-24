@@ -1,7 +1,6 @@
 import requests
 import json
-from indicators_full import get_atr, get_sma
-from indicators import get_vcci
+from indicators_full import get_atr, get_sma, get_vcci
 from kursdaten import get_stock_data_wotd
 from time import sleep
 
@@ -39,7 +38,7 @@ def check_signal(stock):
 
     stock_data = stock_data[:min_length]
 
-
+    output.append(str(vcci[0]))
     if (vcci[0] > 200 and (stock_data[0]["close"] - stock_data[1]["close"]) >= atr_1[1]):
         l_high = 0
         vol_avg = 0
