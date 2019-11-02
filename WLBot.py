@@ -25,6 +25,7 @@ def add(bot, update, args):
     else:
         for i in range(len(args)):
             count = add_to_WL(bot, update, args[i], count)
+            sleep(3)
         bot.send_message(chat_id=update.message.chat_id, text=str(count)+" Werte hinzugefügt")
 
 
@@ -278,7 +279,7 @@ def updateEarnings(bot, job):
             elif earnings != "1900-01-01":
                 json_file["WL"][i]["earnings"] = earnings
             else:
-                bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " Earningsupdate notwendig!") 
+                bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " Earningsupdate notwendig!")
             i += 1
         if i == 15:
             break
