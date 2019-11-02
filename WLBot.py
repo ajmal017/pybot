@@ -27,8 +27,8 @@ def add(bot, update, args):
             result = add_to_WL(bot, update, args[i], result)
             sleep(1.5)
 
-        bot.send_message(chat_id=update.message.chat_id, text=str(len(result["added"]))+" Werte hinzugefügt " + result["added"])
-        bot.send_message(chat_id=update.message.chat_id, text=str(len(result["existed"]))+" Werte existierten bereits " + result["existed"])
+        bot.send_message(chat_id=update.message.chat_id, text=str(len(result["added"]))+" Werte hinzugefügt " + str(result["added"]))
+        bot.send_message(chat_id=update.message.chat_id, text=str(len(result["existed"]))+" Werte existierten bereits " + str(result["existed"]))
 
 
 def add_to_WL(bot, update, stock, result):
