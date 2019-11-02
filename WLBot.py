@@ -126,7 +126,7 @@ def getAll(bot, update):
         json_file = json.load(f)
 
     for stock in json_file["WL"]:
-        l_msg = l_msg + "Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"] + " Timer: " + str(stock["timer"]+"\n"
+        l_msg = l_msg + "Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"] + " Timer: " + str(stock["timer"])+"\n"
         count += 1
     bot.send_message(chat_id=update.message.chat_id, text=l_msg)
     bot.send_message(chat_id=update.message.chat_id, text="Insgesamt " + str(count) + " Werte")
