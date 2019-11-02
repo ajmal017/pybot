@@ -187,17 +187,22 @@ def setTimer(bot, update, args):
 
 def setEarnings(bot, update, args):
 
-    if len(args) == 2:
+    if len(args) == 3 or (len(args) == 2 and args[1] == "1900-01-01"):
         with open('Watchlist.txt', 'r') as f:
             json_file = json.load(f)
 
         found = False
 
+        if len(args) == 2:
+            earnings = args[1]
+        else:
+            earnings = args[1] + " " + args[2]
+
         for k in range(len(json_file["WL"])):
             if args[0] == json_file["WL"][k]["symbol"]:
                 found = True
-                json_file["WL"][k]["earnings"] = args[1]
-                bot.send_message(chat_id=update.message.chat_id, text="Earnings von " + args[0] + " auf " + str(args[1]) + " gesetzt.")
+                json_file["WL"][k]["earnings"] = earnings
+                bot.send_message(chat_id=update.message.chat_id, text="Earnings von " + args[0] + " auf " + str(json_file["WL"][k]["earnings"]) + " gesetzt.")
 
         if found:
             with open('Watchlist.txt', 'w') as f:
@@ -206,7 +211,7 @@ def setEarnings(bot, update, args):
             bot.send_message(chat_id=update.message.chat_id, text= args[0] + " nicht in WL gefunden!")
 
     else:
-        bot.send_message(chat_id=update.message.chat_id, text="ARGS: Symbol Earnings")
+        bot.send_message(chat_id=update.message.chat_id, text="ARGS: Symbol Earnings [AMC/BMO]... / 1900-01-01 ")
 
 
 def decrTimer(bot, job):
