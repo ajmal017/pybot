@@ -243,6 +243,8 @@ def getEarnings(stock):
            }[earnings[:3]]
            day = earnings[4:6]
            when = earnings[7:]
+           if when not in ["AMC","BMO"]:
+               when = "XXX"
            year = str(datetime.today().year)
            earnings = day+"."+month+"."+year+" "+when
     except:
