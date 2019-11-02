@@ -121,14 +121,14 @@ def backup(bot, update):
 
 def getAll(bot, update):
     count = 0
-
+    l_msg = ""
     with open('Watchlist.txt', 'r') as f:
         json_file = json.load(f)
 
     for stock in json_file["WL"]:
-        bot.send_message(chat_id=update.message.chat_id, text="Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"] + " Timer: " + str(stock["timer"]))
+        l_msg = l_msg + "Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"] + " Timer: " + str(stock["timer"]+"\n"
         count += 1
-
+    bot.send_message(chat_id=update.message.chat_id, text=l_msg)
     bot.send_message(chat_id=update.message.chat_id, text="Insgesamt " + str(count) + " Werte")
 
 def getNew(bot, update):
@@ -202,7 +202,7 @@ def setEarnings(bot, update, args):
             bot.send_message(chat_id=update.message.chat_id, text= args[0] + " nicht in WL gefunden!")
 
     else:
-        bot.send_message(chat_id=update.message.chat_id, text="ARGS: Symbol Timer")
+        bot.send_message(chat_id=update.message.chat_id, text="ARGS: Symbol Earnings")
 
 
 def decrTimer(bot, job):
