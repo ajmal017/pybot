@@ -18,18 +18,20 @@ g_mychat_id = 640106465
 
 def add(bot, update, args):
 
-    count = 0
+    result = {"added" : [] , "existed" : []}
 
     if len(args) == 0:
         bot.send_message(chat_id=update.message.chat_id, text="Nothing to add...")
     else:
         for i in range(len(args)):
-            count = add_to_WL(bot, update, args[i], count)
-            sleep(3)
-        bot.send_message(chat_id=update.message.chat_id, text=str(count)+" Werte hinzugefügt")
+            result = add_to_WL(bot, update, args[i], result)
+            sleep(1.5)
+
+        bot.send_message(chat_id=update.message.chat_id, text=str(len(result["added"]))+" Werte hinzugefügt " + result["added"])
+        bot.send_message(chat_id=update.message.chat_id, text=str(len(result["existed"]))+" Werte existierten bereits " + result["existed"])
 
 
-def add_to_WL(bot, update, stock, count):
+def add_to_WL(bot, update, stock, result):
 
 
     json_file = {}
@@ -43,27 +45,28 @@ def add_to_WL(bot, update, stock, count):
             for i in range(len(json_file["WL"])):
                 if stock == json_file["WL"][i]["symbol"]:
                     found = True
-                    bot.send_message(chat_id=update.message.chat_id, text=stock + " existiert bereits in WL!")
+                    #bot.send_message(chat_id=update.message.chat_id, text=stock + " existiert bereits in WL!")
+                    result["existed"].append(stock)
             if not found:
                 item["symbol"] = stock
                 #item["earnings"] = getEarnings(stock)
                 json_file["WL"].append(item)
-                bot.send_message(chat_id=update.message.chat_id, text=stock + " zur WL hinzugefügt!")
-                count += 1
+                #bot.send_message(chat_id=update.message.chat_id, text=stock + " zur WL hinzugefügt!")
+                result["added"].append(stock)
 
     except:
         item["symbol"] = stock
         #item["earnings"] = getEarnings(stock)
         json_file["WL"] = []
         json_file["WL"].append(item)
-        bot.send_message(chat_id=update.message.chat_id, text=stock + " zur WL hinzugefügt!")
-        count += 1
+        #bot.send_message(chat_id=update.message.chat_id, text=stock + " zur WL hinzugefügt!")
+        result["added"].append(stock)
 
 
     with open('Watchlist.txt', 'w') as f:
         json.dump(json_file, f)
 
-    return count
+    return result
 
 def rm(bot, update, args):
 
