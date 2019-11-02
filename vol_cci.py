@@ -1,6 +1,6 @@
 import requests
 import json
-from indicators_full import get_atr, get_sma, get_cci
+from indicators_full import get_atr, get_sma, get_vcci
 from kursdaten import get_stock_data_wotd
 from time import sleep
 
@@ -13,7 +13,7 @@ def backtest(stock):
     sma_length = 50
 
     atr_1_length = 14
-    cci_length = 20
+    vcci_length = 20
 
 
     #get stock data
@@ -27,14 +27,14 @@ def backtest(stock):
 
     atr_1 = get_atr(stock_data, atr_1_length)
 
-    cci = get_cci(stock_data, cci_length)
+    vcci = get_vcci(stock_data, vcci_length)
 
     # Alle Listen so lange machen, wie die kürzeste, damit von hinten durchiteriert werden kann
-    min_length = min(len(sma),len(atr_1), len(cci))
+    min_length = min(len(sma),len(atr_1), len(vcci))
 
     sma = sma[:min_length]
     atr_1 = atr_1[:min_length]
-    cci = cci[:min_length]
+    vcci = vcci[:min_length]
 
     stock_data = stock_data[:min_length]
 
@@ -75,26 +75,30 @@ def backtest(stock):
 
         #Check SIGNAL
 
-        if trade["position"] == '$' and ((stock_data[i]["close"] - stock_data[i+1]["close"]) >= atr_1[i+1]) and ((sma[i] - sma[i+15]) > 0):
+        if (vcci > 200 and (stock_data[0]["close"] - stock_data[1]["close"]) >= atr_1[1]):
                 l_high = 0
-                for k in range(20):
-                    vol_avg += stock_data[i+k]["volume"]
-                    if stock_data[i+k]["high"] > l_high:
-                        l_high = stock_data[i+k]["high"]
+                vol_avg = 0
 
-
+                for i in range(20):
+                    vol_avg += stock_data[i]["volume"]
 
                 vol_avg = vol_avg/20
 
-                if (cci[i] * stock_data[i]["volume"]/vol_avg)  > 250 :
+                if stock_data[0]["volume"] > vol_avg:
 
-                    trade["EK"] = stock_data[i-1]["open"]
-                    trade["SL"] = max(stops_15)
 
-                    trade["Anzahl"] = round(300/(trade["EK"] - trade["SL"]))
+                    for i in range(1, 100):
+                        if l_high < stock_data[i]["close"]:
+                            l_high = (stock_data[i]["close"]
+                    if (stock_data[0]["close"] > l_high):
 
-                    trade["position"] = 'L'
-                    print(stock + " BUY am " + stock_data[i]["date"] + ' Anzahl ' + str(trade["Anzahl"]) + ' Kurs ' +  str(trade["EK"]) +  " " + str(trade["EK"]*trade["Anzahl"]))
+                        trade["EK"] = stock_data[i-1]["open"]
+                        trade["SL"] = max(stops_15)
+
+                        trade["Anzahl"] = round(300/(trade["EK"] - trade["SL"]))
+
+                        trade["position"] = 'L'
+                        print(stock + " BUY am " + stock_data[i]["date"] + ' Anzahl ' + str(trade["Anzahl"]) + ' Kurs ' +  str(trade["EK"]) +  " " + str(trade["EK"]*trade["Anzahl"]))
 
 
 

@@ -1,0 +1,1 @@
+{"WL": [{"symbol": "AAPL", "earnings": "1900-01-01", "timer": "N"}]}
