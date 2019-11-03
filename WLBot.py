@@ -367,6 +367,7 @@ dp.add_handler(CommandHandler('setEarnings', setEarnings, pass_args=True))
 dp.add_handler(CommandHandler('decrTimer', decrTimer))
 dp.add_handler(CommandHandler('earningsInfo', earningsInfo))
 dp.add_handler(CommandHandler('updateEarnings', updateEarnings))
+dp.add_handler(CommandHandler('help', help))
 
 
 updater.start_polling()
