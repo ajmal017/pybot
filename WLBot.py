@@ -312,9 +312,10 @@ def updateEarnings(bot, job):
             else:
                 bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " Earningsupdate notwendig!")
             i += 1
-        if i == 15:
+            sleep(10)
+        if i == 12:
             break
-        sleep(60)
+
 
     with open('Watchlist.txt', 'w') as f:
         json.dump(json_file, f)
