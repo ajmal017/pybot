@@ -137,27 +137,34 @@ def getAll(bot, update):
 
 def getNew(bot, update):
     count = 0
-
+    l_msg = ""
     with open('Watchlist.txt', 'r') as f:
         json_file = json.load(f)
 
     for stock in json_file["WL"]:
         if stock["timer"] == "N":
-            bot.send_message(chat_id=update.message.chat_id, text="Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"])
+            l_msg = l_msg + "Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"]+"\n"
             count += 1
+            if count%20 == 0:
+                bot.send_message(chat_id=update.message.chat_id, text=l_msg)
+                l_msg = ""
 
     bot.send_message(chat_id=update.message.chat_id, text="Insgesamt " + str(count) + " neue Werte")
 
 def getWL(bot, update):
     count = 0
-
+    l_msg = ""
     with open('Watchlist.txt', 'r') as f:
         json_file = json.load(f)
 
     for stock in json_file["WL"]:
         if stock["timer"] == "0":
-            bot.send_message(chat_id=update.message.chat_id, text="Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"])
+            l_msg = l_msg + "Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"]+"\n"
             count += 1
+            if count%20 == 0:
+                bot.send_message(chat_id=update.message.chat_id, text=l_msg)
+                l_msg = ""
+
 
     bot.send_message(chat_id=update.message.chat_id, text="Insgesamt " + str(count) + " Werte")
 
@@ -273,9 +280,10 @@ def earningsInfo(bot):
         json_file = json.load(f)
 
     for stock in json_file["WL"]:
-        earnings = datetime.strptime(stock["earnings"][:-4], '%d.%m.%Y')
-        if earnings <= dt and earnings >= datetime.today():
-            bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " - Earnings am " + stock["earnings"])
+        if earnings != "1900-01-01"
+            earnings = datetime.strptime(stock["earnings"][:-4], '%d.%m.%Y')
+            if earnings <= dt and earnings >= datetime.today():
+                bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " - Earnings am " + stock["earnings"])
 
 def updateEarnings(bot, job):
 
