@@ -280,7 +280,7 @@ def earningsInfo(bot):
         json_file = json.load(f)
 
     for stock in json_file["WL"]:
-        if earnings != "1900-01-01"
+        if earnings != "1900-01-01":
             earnings = datetime.strptime(stock["earnings"][:-4], '%d.%m.%Y')
             if earnings <= dt and earnings >= datetime.today():
                 bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " - Earnings am " + stock["earnings"])
