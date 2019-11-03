@@ -9,6 +9,7 @@ import urllib
 from bs4 import BeautifulSoup
 from requests import get
 from datetime import datetime, timedelta
+from proxy_requests import ProxyRequests
 
 
 g_bot_id = '1009930804:AAEST4BhDyfl_rpYwHlTcZjMhzKKotBWtKs'
@@ -237,37 +238,40 @@ def decrTimer(bot, job):
     bot.send_message(chat_id = g_mychat_id, text="Timers decreased...")
 
 def getEarnings(stock):
-
-    url = "https://finviz.com/quote.ashx?t="+stock
     try:
-        with urllib.request.urlopen(url) as response:
-           html = response.read()
-           soup = BeautifulSoup(html, 'html.parser')
-           earnings = soup.contents[36].table.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.b.string
-           month = {
-           "Jan":"01",
-           "Feb":"02",
-           "Mar":"03",
-           "Apr":"04",
-           "May":"05",
-           "Jun":"06",
-           "Jul":"07",
-           "Aug":"08",
-           "Sep":"09",
-           "Oct":"10",
-           "Nov":"11",
-           "Dec":"12"
-           }[earnings[:3]]
-           day = earnings[4:6]
-           when = earnings[7:]
-           if when not in ["AMC","BMO"]:
-               when = "XXX"
-           year = str(datetime.today().year)
-           earnings = day+"."+month+"."+year+" "+when
-    except:
-        earnings = "1900-01-01"
+        url = "https://finviz.com/quote.ashx?t="+stock
 
-    return earnings
+        request = ProxyRequests(url)
+        request.get()
+        html = str(request)
+
+        soup = BeautifulSoup(html, 'html.parser')
+        earnings = soup.contents[36].table.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.b.string
+        month = {
+        "Jan":"01",
+        "Feb":"02",
+        "Mar":"03",
+        "Apr":"04",
+        "May":"05",
+        "Jun":"06",
+        "Jul":"07",
+        "Aug":"08",
+        "Sep":"09",
+        "Oct":"10",
+        "Nov":"11",
+        "Dec":"12"
+        }[earnings[:3]]
+        day = earnings[4:6]
+        when = earnings[7:]
+        if when not in ["AMC","BMO"]:
+            when = "XXX"
+        year = str(datetime.today().year)
+        earnings = day+"."+month+"."+year+" "+when
+
+        return earnings
+
+    except:
+        return "1900-01-01"
 
 def earningsInfoJob(bot,job):
     earningsInfo(bot)
@@ -294,7 +298,7 @@ def earningsInfo(bot):
 
     bot.send_message(chat_id=g_mychat_id, text=l_msg)
 
-def updateEarnings(bot, job):
+def updateEarnings(bot, update):
 
     i = 0
 
@@ -312,7 +316,7 @@ def updateEarnings(bot, job):
             else:
                 bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " Earningsupdate notwendig!")
             i += 1
-            sleep(10)
+            sleep(5)
         if i == 12:
             break
 
