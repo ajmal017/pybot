@@ -149,6 +149,7 @@ def getNew(bot, update):
                 bot.send_message(chat_id=update.message.chat_id, text=l_msg)
                 l_msg = ""
 
+    bot.send_message(chat_id=update.message.chat_id, text=l_msg)
     bot.send_message(chat_id=update.message.chat_id, text="Insgesamt " + str(count) + " neue Werte")
 
 def getWL(bot, update):
@@ -165,7 +166,7 @@ def getWL(bot, update):
                 bot.send_message(chat_id=update.message.chat_id, text=l_msg)
                 l_msg = ""
 
-
+    bot.send_message(chat_id=update.message.chat_id, text=l_msg)
     bot.send_message(chat_id=update.message.chat_id, text="Insgesamt " + str(count) + " Werte")
 
 def setTimer(bot, update, args):
@@ -274,6 +275,8 @@ def earningsInfoJob(bot,job):
 def earningsInfo(bot):
 
     dt = datetime.today() + timedelta(days=6)
+    l_msg = ""
+    l_count = 0
 
     bot.send_message(chat_id=g_mychat_id, text="Earnings vom " + datetime.today().strftime('%d.%m.%Y') + " bis " + dt.strftime('%d.%m.%Y'))
     with open('Watchlist.txt', 'r') as f:
@@ -283,7 +286,13 @@ def earningsInfo(bot):
         if earnings != "1900-01-01":
             earnings = datetime.strptime(stock["earnings"][:-4], '%d.%m.%Y')
             if earnings <= dt and earnings >= datetime.today():
-                bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " - Earnings am " + stock["earnings"])
+                l_msg = stock["symbol"] + " - Earnings am " + stock["earnings"] + "\n"
+                l_count += 1
+                if count%20 == 0:
+                    bot.send_message(chat_id=g_mychat_id, text=l_msg)
+                    l_msg = ""
+
+    bot.send_message(chat_id=g_mychat_id, text=l_msg)
 
 def updateEarnings(bot, job):
 
@@ -311,8 +320,20 @@ def updateEarnings(bot, job):
         json.dump(json_file, f)
 
 
-
-
+def help(bot,update):
+    l_msg = ""
+    l_msg = l_msg + '/add' + "\n"
+    l_msg = l_msg + '/rm' + "\n"
+    l_msg = l_msg + '/backup' + "\n"
+    l_msg = l_msg + '/getAll' + "\n"
+    l_msg = l_msg + '/getNew' + "\n"
+    l_msg = l_msg + '/getWL' + "\n"
+    l_msg = l_msg + '/setTimer' + "\n"
+    l_msg = l_msg + '/setEarnings' + "\n"
+    l_msg = l_msg + '/decrTimer' + "\n"
+    l_msg = l_msg + '/earningsInfo' + "\n"
+    l_msg = l_msg + '/updateEarnings' + "\n"
+    bot.send_message(chat_id=update.message.chat_id, text=l_msg)
 
 def echo(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text=update.message.text)
@@ -344,7 +365,6 @@ dp.add_handler(CommandHandler('getWL', getWL))
 dp.add_handler(CommandHandler('setTimer', setTimer, pass_args=True))
 dp.add_handler(CommandHandler('setEarnings', setEarnings, pass_args=True))
 dp.add_handler(CommandHandler('decrTimer', decrTimer))
-dp.add_handler(CommandHandler('getEarnings', getEarnings, pass_args=True))
 dp.add_handler(CommandHandler('earningsInfo', earningsInfo))
 dp.add_handler(CommandHandler('updateEarnings', updateEarnings))
 
