@@ -350,7 +350,7 @@ t1 = time(6,30)
 decrTimer_jobq = jobq.run_daily(decrTimer,t1)
 earningsInfo_jobq = jobq.run_daily(earningsInfoJob,t1)
 
-updateEarnings_jobq = jobq.run_repeating(updateEarnings,360)
+updateEarnings_jobq = jobq.run_repeating(updateEarnings,3600)
 
 
 dp = updater.dispatcher
