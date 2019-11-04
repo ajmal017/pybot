@@ -320,7 +320,7 @@ def earningsInfo(bot, update):
         if stock["earnings"] != "1900-01-01":
             earnings = datetime.strptime(stock["earnings"][:-4], '%d.%m.%Y')
             if earnings <= dt and earnings >= datetime.today():
-                l_msg = stock["symbol"] + " - Earnings am " + stock["earnings"] + "\n"
+                l_msg = l_msg + stock["symbol"] + " - Earnings am " + stock["earnings"] + "\n"
                 l_count += 1
                 if l_count%20 == 0:
                     bot.send_message(chat_id=g_mychat_id, text=l_msg)
