@@ -274,6 +274,7 @@ def getEarnings(stock):
 
         soup = BeautifulSoup(html, 'html.parser')
         earnings = soup.contents[36].table.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.b.string
+        print(stock + " got them! - earnings: " + earnings)
         month = {
         "Jan":"01",
         "Feb":"02",
@@ -299,7 +300,7 @@ def getEarnings(stock):
         return earnings
 
     except:
-        print(stock + " Error beim Scraping! // earnings: " earnings)
+        print(stock + " Error beim Scraping! // earnings: " + earnings)
         r = None
         return "1900-01-01"
 
