@@ -241,8 +241,32 @@ def getEarnings(stock):
     try:
         url = "https://finviz.com/quote.ashx?t="+stock
 
-        request = ProxyRequests(url)
-        request.get()
+        user_agent_list = [
+
+            'Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0'
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
+            'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/532.2 (KHTML, like Gecko) ChromePlus/4.0.222.3 Chrome/4.0.222.3 Safari/532.2',
+            'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0',
+            'Mozilla/5.0 (X11; Linux i586; rv:63.0) Gecko/20100101 Firefox/63.0',
+            'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:63.0) Gecko/20100101 Firefox/63.0',
+            'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:62.0) Gecko/20100101 Firefox/62.0',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:10.0) Gecko/20100101 Firefox/62.0',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A',
+            'Mozilla/5.0 (iPad; CPU OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5355d Safari/8536.25',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.13+ (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/534.55.3 (KHTML, like Gecko) Version/5.1.3 Safari/534.53.10',
+            'Opera/9.80 (X11; Linux i686; Ubuntu/14.10) Presto/2.12.388 Version/12.16',
+            'Opera/9.80 (Macintosh; Intel Mac OS X 10.14.1) Presto/2.12.388 Version/12.16',
+            'Mozilla/5.0 (Windows NT 6.0; rv:2.0) Gecko/20100101 Firefox/4.0 Opera 12.14',
+            'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.0) Opera 12.14'
+
+        ]
+        user_agent = random.choice(user_agent_list)
+        h = {"User-Agent": user_agent}
+        r.set_headers(h)
+        r.get_with_headers()
+        #request = ProxyRequests(url)
+        #request.get()
         html = str(request)
 
         soup = BeautifulSoup(html, 'html.parser')
@@ -268,9 +292,12 @@ def getEarnings(stock):
         year = str(datetime.today().year)
         earnings = day+"."+month+"."+year+" "+when
 
+        r = None
         return earnings
 
     except:
+        print(html)
+        r = None
         return "1900-01-01"
 
 def earningsInfoJob(bot,job):
@@ -287,7 +314,7 @@ def earningsInfo(bot):
         json_file = json.load(f)
 
     for stock in json_file["WL"]:
-        if earnings != "1900-01-01":
+        if stock["earnings"] != "1900-01-01":
             earnings = datetime.strptime(stock["earnings"][:-4], '%d.%m.%Y')
             if earnings <= dt and earnings >= datetime.today():
                 l_msg = stock["symbol"] + " - Earnings am " + stock["earnings"] + "\n"
