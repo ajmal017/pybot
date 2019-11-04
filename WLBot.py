@@ -306,7 +306,7 @@ def getEarnings(stock):
 def earningsInfoJob(bot,job):
     earningsInfo(bot)
 
-def earningsInfo(bot):
+def earningsInfo(bot, update):
 
     dt = datetime.today() + timedelta(days=6)
     l_msg = ""
