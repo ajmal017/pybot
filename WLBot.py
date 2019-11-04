@@ -322,7 +322,7 @@ def earningsInfo(bot, update):
             if earnings <= dt and earnings >= datetime.today():
                 l_msg = stock["symbol"] + " - Earnings am " + stock["earnings"] + "\n"
                 l_count += 1
-                if count%20 == 0:
+                if l_count%20 == 0:
                     bot.send_message(chat_id=g_mychat_id, text=l_msg)
                     l_msg = ""
 
