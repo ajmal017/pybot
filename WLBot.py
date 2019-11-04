@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 from requests import get
 from datetime import datetime, timedelta
 from proxy_requests import ProxyRequests
+import random
 
 
 g_bot_id = '1009930804:AAEST4BhDyfl_rpYwHlTcZjMhzKKotBWtKs'
