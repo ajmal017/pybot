@@ -262,7 +262,7 @@ def getEarnings(stock):
             'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.0) Opera 12.14'
 
         ]
-        
+
         request = ProxyRequests(url)
         #request.get()
         user_agent = random.choice(user_agent_list)
@@ -336,19 +336,22 @@ def updateEarnings(bot, update):
         json_file = json.load(f)
 
     for stock in json_file["WL"]:
-        if stock["earnings"] == "1900-01-01" or datetime.strptime(stock["earnings"][:-4], '%d.%m.%Y') < datetime.today() - timedelta(days=60):
-            earnings = getEarnings(stock["symbol"])
-            if earnings != "1900-01-01" and earnings == stock["earnings"]:
-                del json_file["WL"][i]
-                json_file["WL"].append(stock)
-            elif earnings != "1900-01-01":
-                json_file["WL"][i]["earnings"] = earnings
-            else:
-                bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " Earningsupdate notwendig!")
-            i += 1
-            sleep(5)
-        if i == 12:
-            break
+        try:
+            if stock["earnings"] == "1900-01-01" or datetime.strptime(stock["earnings"][:-4], '%d.%m.%Y') < datetime.today() - timedelta(days=60):
+                earnings = getEarnings(stock["symbol"])
+                if earnings != "1900-01-01" and earnings == stock["earnings"]:
+                    del json_file["WL"][i]
+                    json_file["WL"].append(stock)
+                elif earnings != "1900-01-01":
+                    json_file["WL"][i]["earnings"] = earnings
+                else:
+                    bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " Earningsupdate notwendig!")
+                i += 1
+                sleep(5)
+            if i == 12:
+                break
+        except:
+            print("stockname: " + stock["symbol"] + "earnings 4: " + stock["earnings"][:-4])
 
 
     with open('Watchlist.txt', 'w') as f:
