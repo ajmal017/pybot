@@ -299,7 +299,7 @@ def getEarnings(stock):
         return earnings
 
     except:
-        print(html)
+        print(stock + " Error beim Scraping!")
         r = None
         return "1900-01-01"
 
