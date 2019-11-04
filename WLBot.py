@@ -353,6 +353,7 @@ def updateEarnings(bot, update):
                 break
         except:
             print("stockname: " + stock["symbol"] + "earnings 4: " + stock["earnings"][:-4])
+            bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " Earningsupdate notwendig!")
         i+=1
 
 
