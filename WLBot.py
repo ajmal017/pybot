@@ -274,7 +274,6 @@ def getEarnings(stock):
 
         soup = BeautifulSoup(html, 'html.parser')
         earnings = soup.contents[36].table.tr.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.td.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.b.string
-        print(stock + " got them! - earnings: " + earnings)
         month = {
         "Jan":"01",
         "Feb":"02",
@@ -332,6 +331,7 @@ def earningsInfo(bot):
 def updateEarnings(bot, update):
 
     i = 0
+    count = 0
 
     with open('Watchlist.txt', 'r') as f:
         json_file = json.load(f)
@@ -347,12 +347,13 @@ def updateEarnings(bot, update):
                     json_file["WL"][i]["earnings"] = earnings
                 else:
                     bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " Earningsupdate notwendig!")
-                i += 1
+                count += 1
                 sleep(5)
-            if i == 12:
+            if count == 12:
                 break
         except:
             print("stockname: " + stock["symbol"] + "earnings 4: " + stock["earnings"][:-4])
+        i+=1
 
 
     with open('Watchlist.txt', 'w') as f:
