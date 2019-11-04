@@ -262,12 +262,14 @@ def getEarnings(stock):
             'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.0) Opera 12.14'
 
         ]
+        
+        request = ProxyRequests(url)
+        #request.get()
         user_agent = random.choice(user_agent_list)
         h = {"User-Agent": user_agent}
-        r.set_headers(h)
-        r.get_with_headers()
-        #request = ProxyRequests(url)
-        #request.get()
+        request.set_headers(h)
+        request.get_with_headers()
+
         html = str(request)
 
         soup = BeautifulSoup(html, 'html.parser')
