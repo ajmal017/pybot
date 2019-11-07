@@ -37,7 +37,7 @@ def add_to_WL(bot, update, stock, result):
 
 
     json_file = {}
-    item = {"symbol" : "dummy", "earnings" : "1900-01-01", "timer" : "N"}
+    item = {"symbol" : "dummy", "earnings" : "1900-01-01", "timer" : "N", "comment" : ""}
     found = False
 
     try:
@@ -128,7 +128,7 @@ def getAll(bot, update):
         json_file = json.load(f)
 
     for stock in json_file["WL"]:
-        l_msg = l_msg + "Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"] + " Timer: " + str(stock["timer"])+"\n"
+        l_msg = l_msg + "Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"] + " Timer: " + str(stock["timer"]) + " Kommentar: " + stock["comment"] + "\n"
         count += 1
         if count%20 == 0:
             bot.send_message(chat_id=update.message.chat_id, text=l_msg)
@@ -162,7 +162,7 @@ def getWL(bot, update):
 
     for stock in json_file["WL"]:
         if stock["timer"] == "0":
-            l_msg = l_msg + "Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"]+"\n"
+            l_msg = l_msg + "Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"] + " Kommentar: " + stock["comment"] +"\n"
             count += 1
             if count%20 == 0:
                 bot.send_message(chat_id=update.message.chat_id, text=l_msg)
@@ -180,7 +180,7 @@ def get(bot, update, args):
     for stock in json_file["WL"]:
         if stock["symbol"] in args:
             l_msg = l_msg + "Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"] + " Timer: " + str(stock["timer"])+"\n"
-    
+
 
     bot.send_message(chat_id=update.message.chat_id, text=l_msg)
 
@@ -231,6 +231,28 @@ def setEarnings(bot, update, args):
         if found:
             with open('Watchlist.txt', 'w') as f:
                 json.dump(json_file, f)
+        else:
+            bot.send_message(chat_id=update.message.chat_id, text= args[0] + " nicht in WL gefunden!")
+
+    else:
+        bot.send_message(chat_id=update.message.chat_id, text="ARGS: Symbol Earnings [AMC/BMO]... / 1900-01-01 ")
+
+def setComment(bot, update, args):
+
+    if len(args) == 2:
+        with open('Watchlist.txt', 'r') as f:
+            json_file = json.load(f)
+
+        for i in range(len(json_file["WL"])):
+            if args[0] == json_file["WL"][i]["symbol"]:
+                found = True
+                json_file["WL"][i]["comment"] = args[1]
+                bot.send_message(chat_id=update.message.chat_id, text="Earnings von " + args[0] + " auf " + str(json_file["WL"][k]["earnings"]) + " gesetzt.")
+
+            if found:
+                with open('Watchlist.txt', 'w') as f:
+                    json.dump(json_file, f)
+                break
         else:
             bot.send_message(chat_id=update.message.chat_id, text= args[0] + " nicht in WL gefunden!")
 
