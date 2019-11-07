@@ -239,25 +239,31 @@ def setEarnings(bot, update, args):
 
 def setComment(bot, update, args):
 
-    if len(args) == 2:
-        with open('Watchlist.txt', 'r') as f:
-            json_file = json.load(f)
+found = False
+comment = ""
 
-        for i in range(len(json_file["WL"])):
-            if args[0] == json_file["WL"][i]["symbol"]:
-                found = True
-                json_file["WL"][i]["comment"] = args[1]
-                bot.send_message(chat_id=update.message.chat_id, text="Kommentar von " + args[0] + " auf " + str(json_file["WL"][k]["comment"]) + " gesetzt.")
+    with open('Watchlist.txt', 'r') as f:
+        json_file = json.load(f)
 
-            if found:
-                with open('Watchlist.txt', 'w') as f:
-                    json.dump(json_file, f)
-                break
-        else:
-            bot.send_message(chat_id=update.message.chat_id, text= args[0] + " nicht in WL gefunden!")
+    comment = args[1]
+    for i in range(2,len(args)-1):
+        comment = comment + " " + args[i]
 
+
+    for i in range(len(json_file["WL"])):
+        if args[0] == json_file["WL"][i]["symbol"]:
+            found = True
+            json_file["WL"][i]["comment"] = comment
+            bot.send_message(chat_id=update.message.chat_id, text="Kommentar von " + args[0] + " auf " + str(json_file["WL"][i]["comment"]) + " gesetzt.")
+
+        if found:
+            with open('Watchlist.txt', 'w') as f:
+                json.dump(json_file, f)
+            break
     else:
-        bot.send_message(chat_id=update.message.chat_id, text="ARGS: Symbol  Kommentar in Gänsefüßchen")
+        bot.send_message(chat_id=update.message.chat_id, text= args[0] + " nicht in WL gefunden!")
+
+
 
 
 def decrTimer(bot, job):
