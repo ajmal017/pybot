@@ -180,9 +180,7 @@ def get(bot, update, args):
     for stock in json_file["WL"]:
         if stock["symbol"] in args:
             l_msg = l_msg + "Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"] + " Timer: " + str(stock["timer"])+"\n"
-            if count%20 == 0:
-                bot.send_message(chat_id=update.message.chat_id, text=l_msg)
-                l_msg = ""
+    
 
     bot.send_message(chat_id=update.message.chat_id, text=l_msg)
 
