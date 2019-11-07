@@ -246,7 +246,7 @@ def setComment(bot, update, args):
         json_file = json.load(f)
 
     comment = args[1]
-    for i in range(2,len(args)-1):
+    for i in range(2,len(args)):
         comment = comment + " " + args[i]
 
 
