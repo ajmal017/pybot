@@ -171,6 +171,22 @@ def getWL(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text=l_msg)
     bot.send_message(chat_id=update.message.chat_id, text="Insgesamt " + str(count) + " Werte")
 
+def get(bot, update, args):
+
+    l_msg = ""
+    with open('Watchlist.txt', 'r') as f:
+        json_file = json.load(f)
+
+    for stock in json_file["WL"]:
+        if stock["symbol"] in args:
+            l_msg = l_msg + "Symbol: " + stock["symbol"] + " Earnings: " + stock["earnings"] + " Timer: " + str(stock["timer"])+"\n"
+            if count%20 == 0:
+                bot.send_message(chat_id=update.message.chat_id, text=l_msg)
+                l_msg = ""
+
+    bot.send_message(chat_id=update.message.chat_id, text=l_msg)
+
+
 def setTimer(bot, update, args):
 
     if len(args) == 2:
@@ -347,10 +363,10 @@ def updateEarnings(bot, update):
                     json_file["WL"][i]["earnings"] = earnings
                 else:
                     bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " Earningsupdate notwendig!")
-                count += 1
-                sleep(5)
-            if count == 12:
-                break
+                #count += 1
+                sleep(0.5)
+            #if count == 12:
+                #break
         except:
             print("stockname: " + stock["symbol"] + "earnings 4: " + stock["earnings"][:-4])
             bot.send_message(chat_id=g_mychat_id, text=stock["symbol"] + " Earningsupdate notwendig!")
@@ -369,6 +385,7 @@ def help(bot,update):
     l_msg = l_msg + '/getAll' + "\n"
     l_msg = l_msg + '/getNew' + "\n"
     l_msg = l_msg + '/getWL' + "\n"
+    l_msg = l_msg + '/get' + "\n"
     l_msg = l_msg + '/setTimer' + "\n"
     l_msg = l_msg + '/setEarnings' + "\n"
     l_msg = l_msg + '/decrTimer' + "\n"
@@ -387,10 +404,11 @@ jobq = updater.job_queue
 
 t1 = time(6,30)
 
+updateEarnings_jobq = jobq.run_daily(updateEarnings,t1)
 decrTimer_jobq = jobq.run_daily(decrTimer,t1)
 earningsInfo_jobq = jobq.run_daily(earningsInfoJob,t1)
 
-updateEarnings_jobq = jobq.run_repeating(updateEarnings,3600)
+#updateEarnings_jobq = jobq.run_repeating(updateEarnings,3600)
 
 
 dp = updater.dispatcher
