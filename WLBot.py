@@ -247,7 +247,7 @@ def setComment(bot, update, args):
             if args[0] == json_file["WL"][i]["symbol"]:
                 found = True
                 json_file["WL"][i]["comment"] = args[1]
-                bot.send_message(chat_id=update.message.chat_id, text="Earnings von " + args[0] + " auf " + str(json_file["WL"][k]["earnings"]) + " gesetzt.")
+                bot.send_message(chat_id=update.message.chat_id, text="Kommentar von " + args[0] + " auf " + str(json_file["WL"][k]["comment"]) + " gesetzt.")
 
             if found:
                 with open('Watchlist.txt', 'w') as f:
@@ -257,7 +257,7 @@ def setComment(bot, update, args):
             bot.send_message(chat_id=update.message.chat_id, text= args[0] + " nicht in WL gefunden!")
 
     else:
-        bot.send_message(chat_id=update.message.chat_id, text="ARGS: Symbol Earnings [AMC/BMO]... / 1900-01-01 ")
+        bot.send_message(chat_id=update.message.chat_id, text="ARGS: Symbol  Kommentar in Gänsefüßchen")
 
 
 def decrTimer(bot, job):
