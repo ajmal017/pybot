@@ -239,8 +239,8 @@ def setEarnings(bot, update, args):
 
 def setComment(bot, update, args):
 
-found = False
-comment = ""
+    found = False
+    comment = ""
 
     with open('Watchlist.txt', 'r') as f:
         json_file = json.load(f)
